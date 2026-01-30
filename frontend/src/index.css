@@ -1,0 +1,109 @@
+/*import fonta*/
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+/*bootstrap ikonice*/ 
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css");
+
+/*Root variable za boje i fontove*/   
+:root {
+  --clr-primary: #854bdb;
+  --clr-secondary: #85dbee;
+  --clr-bg: #f0eacf;
+ 
+  --clr-white: #fff;
+ 
+  --clr-text: #4b5563;
+  --clr-heading: #031403;
+ 
+  --clr-box1: #feeef0;
+  --clr-box2: #f7f5f4;
+  --clr-box3: #f3f7ed;
+ 
+  --fs-main: 50px;
+  --fs-heading: 20px;
+  --fs-sub-heading: 16px;
+  --fs-body: 14px;
+  --fs-small: 12px;
+ 
+  --lh-main: 60px;
+  --lg-heading: 26px;
+  --lh-sub-heading: 20px;
+  --lh-body: 20px;
+  --lh-small: 14px;
+ 
+  --fontFamily: "Inter", sans-serif;
+}
+ 
+/* Dark theme boje */
+[data-bs-theme="dark"] {
+  --clr-primary: #6e116c;
+  --clr-secondary: #243d65;
+  --clr-bg: #222934;
+ 
+  --clr-heading: whitesmoke;
+  --clr-text: #e0e0e0;
+ 
+  --clr-box1: #2e222c;
+  --clr-box2: #1b2c2c;
+  --clr-box3: #1a2537;
+}
+
+/*Mobilni adapteri*/
+
+@media (max-width: 768px) {
+  :root {
+    --fs-main: 35px;
+    --lh-main: 45px;
+  }
+}
+@media (max-width: 576px) {
+  :root {
+    --fs-main: 26px;
+    --lh-main: 36px;
+  }
+}
+
+/*Reset za sve html elemente, uklanja defoltne margine i padding*/
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, 
+figure, figcaption, footer, header, hgroup, 
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+  font-family: var(--fontFamily);
+}
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+body {
+	line-height: 1;
+}
+ol, ul {
+	list-style: none;
+}
+blockquote, q {
+	quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+	content: '';
+	content: none;
+}
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
