@@ -107,3 +107,112 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
+/* Override Bootstrap default .container*/
+.container{
+  max-width: 1100px;
+  margin: 0;
+}
+
+@media screen and (min-width : 1280px) { /*sa min ne radi*/
+  .container{
+    padding-left: 2.5rem;
+    padding-right: 2.5rem;
+  }
+}
+
+/*Main heading style*/
+.main_heading{
+  font-size: var(--fs-main);
+  color: var(--clr-heading);
+  font-weight: bold;
+  line-height: var(--lh-main);
+}
+
+.heading{
+  font-size: var(--fs-heading);
+  color: var(--clr-heading);
+  font-weight: bold;
+  line-height: var(--lh-main);
+}
+
+.sub-heading{
+  font-size: var(--fs-sub-heading);
+  color: var(--clr-heading);
+  font-weight: bold;
+  line-height: var(--lh-sub-heading);
+}
+
+.title{
+  font-size: var(--fs-body);
+  color: var(--clr-heading);
+  font-weight: bold;
+  line-height: 20px;
+}
+
+.body-text {
+  font-size: var(--fs-body);
+  color: var(--clr-text);
+ 
+  line-height: var(--lh-body);
+}
+
+.small-text {
+  font-size: var(--fs-small);
+  color: var(--clr-text);
+
+  line-height: var(--lh-small);
+}
+
+.primary-text {
+  color:var(--clr-primary) !important;
+}
+
+.text-clr {
+  color:var(--clr-text) !important;
+}
+.text-white {
+  color:var(--clr-white) !important;
+}
+
+.bg-light {
+ background-color: var(--clr-bg) !important;
+}
+
+.primary-btn {
+  border: 1px solid var(--clr-primary) !important;
+  background:var(--clr-primary) !important;
+  border-radius: 4px;
+  color: var(--clr-white);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 8px 15px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+  border: none;
+}
+
+.primary-btn:hover{
+
+}
+
+.secondary-btn {
+  border: 1px solid var(--clr-secondary);
+  border-radius: 4px;
+  color: var(--clr-heading);
+  font-size: var(--fs-body);
+  font-weight: 500;
+  letter-spacing: 0.5px;
+  padding: 8px 15px;
+  position: relative;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.secondary-btn:hover{
+  background-color: var(--clr-secondary);
+}

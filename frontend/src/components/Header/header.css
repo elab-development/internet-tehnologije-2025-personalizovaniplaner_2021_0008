@@ -1,0 +1,14 @@
+.top_header{
+    background: var(--clr-primary);
+}
+
+.top_header .dropdown .dropdown-toggle {
+    background: none;
+    border: 0;
+    padding: 0;
+}
+
+.search_box .bi{
+    top: 12px;
+    right: 15px;
+}
