@@ -1,9 +1,13 @@
-import React from 'react'  
+import React, { useState } from 'react'  
 import '../Header/header.css'
 import { Col, Container, Row, Dropdown, InputGroup, Form, ListGroup } from 'react-bootstrap'
 import logo from '../../assets/temp_logo2.png' /*promenicemo posle*/
+import Cart from '../Cart/Cart'
 
 const Header = () => {
+
+  const [cartBox, setCartBox] = useState(false)
+
   return (
     <>
     <div className='top_header py-1'>
@@ -62,7 +66,7 @@ const Header = () => {
           </Col>
 
           <Col xl = {2} lg = {3} md = {6} sm = {7} xs = {7}>
-            <ListGroup horizontal>
+            <ListGroup horizontal className='justify-content-end'>
 
               <ListGroup.Item className='border-0'>
                 <span className='d-flex align-items-center'>
@@ -90,12 +94,14 @@ const Header = () => {
                 </span>
               </ListGroup.Item>
               
-              <ListGroup.Item className='border-0'>
+              <ListGroup.Item className='border-0'
+              onClick={() => setCartBox(true)}
+              >
                 <span className='d-flex align-items-center'>
                   <span className='position-relative'>
                     <i class="bi bi-bag-heart"></i>
                     <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      9
+                      6
                     <span class="visually-hidden">unread messages</span>
                     </span> 
                   </span>
@@ -110,6 +116,9 @@ const Header = () => {
         </Row>
       </Container>
     </header>
+
+  <Cart show = {cartBox} setCartBox = {setCartBox}/>
+
     </>
   )
 }

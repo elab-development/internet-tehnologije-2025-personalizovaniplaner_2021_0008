@@ -1,0 +1,9 @@
+.cartOffcanvas{
+    width: 500px;
+}
+
+.cartOffcanvas .btn-close{
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
