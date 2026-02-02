@@ -16,20 +16,27 @@ import cat5 from "../assets/categories/stickers.png";
 // slider images
 import slider1 from "../assets/banner/stationery-1.jpg";
 import slider2 from "../assets/banner/stationery-2.jpg";
+import slider3 from "../assets/banner/stationery-3.jpg";
 
 export const sliderData = [
   {
     id: 0,
-    heading: "Naslov 1",
-    title: "Slogan 1",
+    heading: "Valentine's Day Collection",
+    title: "Make it special with our exclusive stationery",
     image: slider1,
   },
   {
     id: 1,
-    heading: "Naslov 2",
-    title: "Slogan 2",
+    heading: "Planer Sale - Up to 30% Off",
+    title: "Get organized with our stylish planners",
     image: slider2,
   },
+  {
+    id: 2,
+    heading: "Additions for Your Stationery Set",
+    title: "Make planning more fun with our accessories",
+    image: slider3,
+  }
 ];
 
 export const categoriesData = [
