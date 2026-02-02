@@ -2,6 +2,7 @@ import React from 'react';
 import Slider from '../../components/Slider/Slider';
 import { Col, Container, Row } from 'react-bootstrap';
 import { featureData } from '../../utils/data';
+import './Home.css';
  
 const Home = () => {
   return (
@@ -17,8 +18,8 @@ const Home = () => {
                   <div className="d-flex align-items-start">
                     <div className="mb-3 ms-3">
                       <img 
+                        style={{ width: "120px", height: "120px", padding:"20px", objectFit: "cover", borderRadius: "50%" }}
                         src={val.image}
-                        className="img-fluid"
                         alt={val.title}
                       />
                       </div>

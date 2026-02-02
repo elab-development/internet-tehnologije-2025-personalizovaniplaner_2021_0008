@@ -1,6 +1,7 @@
 import React, { useState } from 'react'  
 import '../Header/header.css'
 import { Col, Container, Row, Dropdown, InputGroup, Form, ListGroup, Offcanvas, Navbar, Nav, Button, NavDropdown} from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import logo from '../../assets/temp_logo2.png' /*promenicemo posle*/
 import Cart from '../Cart/Cart'
 import CategoryList from './CategoryList'
@@ -183,13 +184,13 @@ const Header = () => {
                 </div>
 
                 <Nav className="justify-content-start flex-grow-1 pe-3">
-                  <Nav.Link href="#action1">Home</Nav.Link>
-                  <Nav.Link href="#action2">About us</Nav.Link>
-                  <Nav.Link href="#action2">Shop</Nav.Link>
+                  <Nav.Link as={Link} to="/">Home</Nav.Link>
+                  
+                  
 
                   <NavDropdown
                     className='dropdown-fullwidth'
-                    title="Departments"
+                    title="Shop"
                     id={`collapsible-nav-dropdown`}
                     show = {dropDownShow === 1 ? true : false}
                     onMouseEnter={()=> handleDropDown('in', 1)}
@@ -203,7 +204,7 @@ const Header = () => {
                           All Planners
                         </h6>
                         <a className='dropdown-item' href="#">
-                          Planners
+                          Regular Planners
                         </a>  
                         <a className='dropdown-item' href="#">
                           Personalized Planners
@@ -211,50 +212,38 @@ const Header = () => {
                       </Col>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
                         <h6 className='primary-text sub-heading mb-1 ms-2'>
-                          Writing Tools
+                          Planner Pages
                         </h6>
                         <a className='dropdown-item' href="#">
-                          Fine Pens
+                          Daily pages
                         </a>  
                         <a className='dropdown-item' href="#">
-                          Markers
+                          Calendar pages
                         </a>
                         <a className='dropdown-item' href="#">
-                          Highlighters
-                        </a>
-                        <a className='dropdown-item' href="#">
-                          Calligraphy
+                          Trackers
                         </a>
                       </Col>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
                         <h6 className='primary-text sub-heading mb-1 ms-2'>
-                          Stickers and Decor
+                          Stationery
                         </h6>
                         <a className='dropdown-item' href="#">
-                          Cute
+                          Planner separators
                         </a>  
                         <a className='dropdown-item' href="#">
-                          Natural
+                          Pens
                         </a>
                         <a className='dropdown-item' href="#">
-                          Goth
+                          Pockets
                         </a>
                       </Col>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
                         <h6 className='primary-text sub-heading mb-1 ms-2'>
-                          Gifts
+                          Special collections
                         </h6>
                         <a className='dropdown-item' href="#">
-                          Valentine
-                        </a>  
-                        <a className='dropdown-item' href="#">
-                          Birthday
-                        </a>
-                        <a className='dropdown-item' href="#">
-                          Christmas
-                        </a>
-                        <a className='dropdown-item' href="#">
-                          Helloween
+                          Valentine's Day
                         </a>
                       </Col>
                     </Row>
@@ -271,6 +260,7 @@ const Header = () => {
                     </NavDropdown.Item>*/}
                   </NavDropdown>
 
+                  <Nav.Link as={Link} to="/about">About Us</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

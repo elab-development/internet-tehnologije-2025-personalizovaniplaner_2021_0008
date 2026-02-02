@@ -7,16 +7,20 @@ import product5 from "../assets/products/highlighter-01.png";
 import product6 from "../assets/products/planner-01.png";
 
 // category images
-import cat1 from "../assets/categories/notebooks.png";
-import cat2 from "../assets/categories/pens.png";
-import cat3 from "../assets/categories/markers.png";
-import cat4 from "../assets/categories/planners.png";
-import cat5 from "../assets/categories/stickers.png";
+import cat1 from "../assets/categories/planner.png";
+import cat2 from "../assets/categories/pages.png";
+import cat3 from "../assets/categories/stationery.png";
 
 // slider images
 import slider1 from "../assets/banner/stationery-1.jpg";
 import slider2 from "../assets/banner/stationery-2.jpg";
 import slider3 from "../assets/banner/stationery-3.jpg";
+
+// feature images (you can replace these with actual image paths)
+import feature1 from "../assets/feature/personalplanner.jpeg";
+import feature2 from "../assets/feature/pages.jpeg";
+import feature3 from "../assets/feature/quality.jpeg";
+import feature4 from "../assets/feature/tree.jpeg";
 
 export const sliderData = [
   {
@@ -40,11 +44,9 @@ export const sliderData = [
 ];
 
 export const categoriesData = [
-  { id: 0, title: "Notebooks", image: cat1, url: "" },
-  { id: 1, title: "Pens", image: cat2, url: "" },
-  { id: 2, title: "Markers", image: cat3, url: "" },
-  { id: 3, title: "Planners", image: cat4, url: "" },
-  { id: 4, title: "Accessories", image: cat5, url: "" },
+  { id: 0, title: "Planners", image: cat1, url: "" },
+  { id: 1, title: "Planner pages", image: cat2, url: "" },
+  { id: 2, title: "Stationery", image: cat3, url: "" },
 ];
 
 export const productData = [
@@ -102,4 +104,32 @@ export const productData = [
     image: product6,
     rating: 5,
   },
+];
+
+export const featureData = [
+  {
+    id: 0,
+    title: "Personalized planners",
+    text: "Make your planner truly yours with our customizable options.",
+    image: feature1,
+    
+  },
+  {
+    id: 1,
+    title: "Refillable pages",
+    text: "Easily swap out pages to keep your planner fresh and organized.",
+    image: feature2,
+  },
+  {
+    id:2, 
+    title:'Quality assurance', 
+    text:'We ensure the highest quality in all our products.',
+    image:feature3,
+  },
+  {
+    id:3, 
+    title:'Sustainability', 
+    text:'We are committed to environmentally friendly practices in all our products.',
+    image:feature4,
+  }
 ];

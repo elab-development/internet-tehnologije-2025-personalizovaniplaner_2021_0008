@@ -77,7 +77,7 @@
 
 .slider-section .carousel-indicators .active {
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+    transform: translateY(-10px) scale(1);
 }
 
 
