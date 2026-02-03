@@ -79,7 +79,7 @@ const { user } = useAuth();
 
               <ListGroup.Item className='border-0'>
                 <Link
-                  to = {user ? '/profile' : '/login'}
+                  to = {user ? (user.role === 'admin' ? '/admin' : '/profile' ) : '/login'}
                   className='text-decoration-none text-clr'
                   >
                 <span className='d-flex align-items-center'>
