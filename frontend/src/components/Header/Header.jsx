@@ -162,8 +162,8 @@ const { user } = useAuth();
                   <i class="bi bi-search-heart position-absolute"></i>
                 </InputGroup>
                 </div>
-                <button className='btn btn-light rounded-1 w-100 mb-3'>
-                  <i className='bi bi-geo-alt me-2'>Location</i>
+                <button className='btn btn-light rounded-1 w-100 mb-3' disabled={true}>
+                  <i className='bi bi-geo-alt me-2'>Location: RS</i>
                 </button>
                 </div>
                 <div className='category_list'>

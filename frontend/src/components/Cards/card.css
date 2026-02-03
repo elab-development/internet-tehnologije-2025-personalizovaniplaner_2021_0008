@@ -31,7 +31,34 @@
   background-color: ivory;
   border-radius: 50%;
   left: 0;
-  top: 0;          /* dodato */
+  top: 0;
   z-index: -1;
-  transition: all 0.3s ease; /* opcionalno za animaciju */
+  transition: all 0.3s ease;
+}
+
+.heading {
+  font-size: 28px;   
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--clr-heading);
+  text-align: center;
+}
+
+.card-box {
+  max-width: 220px;   
+  margin: 0 auto;
+}
+
+.card img {
+  max-width: 180px;   
+  height: auto;
+}
+
+.title {
+  font-size: 16px;    
+}
+
+.category-description {
+  font-size: 13px;    
+  margin-top: 4px;    
 }

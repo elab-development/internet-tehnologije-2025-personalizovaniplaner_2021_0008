@@ -8,38 +8,34 @@ const Categories = () => {
   const settings = {
     dots: false,
     infinite: true,
-    autoplay: true,   
+    autoplay: true,
     speed: 800,
-    slidesToShow: 9,
+    slidesToShow: 3,
     slidesToScroll: 1,
     initialSlide: 0,
     responsive: [
       {
         breakpoint: 1024,
-        settings: { slidesToShow: 7, slidesToScroll: 5, infinite: true, dots: false },
+        settings: { slidesToShow: 3, slidesToScroll: 1 },
       },
       {
-        breakpoint: 900,
-        settings: { slidesToShow: 5, slidesToScroll: 5, infinite: true, dots: true },
-      },
-      {
-        breakpoint: 600,
-        settings: { slidesToShow: 3, slidesToScroll: 3, dots: true },
+        breakpoint: 768,
+        settings: { slidesToShow: 2, slidesToScroll: 1 },
       },
       {
         breakpoint: 480,
-        settings: { slidesToShow: 2, slidesToScroll: 2, dots: true },
+        settings: { slidesToShow: 1, slidesToScroll: 1 },
       },
     ],
   };
 
   return (
-    <section className='categories py-5 slick-slider bg-light'>
+    <section className='categories py-3 slick-slider bg-light'> 
       <Container>
         <Row>
-          <Col md="12" className='mb-4'>
-            <div className='d-flex justify-content-between align-items-center'>
-              <h1 className='heading'>Top Categories</h1>
+          <Col md="12" className='mb-3'> 
+            <h1 className='heading'>Top Categories</h1>
+            <div className="text-center mt-2"> 
               <button className='bt primary-btn'>View All</button>
             </div>
           </Col>

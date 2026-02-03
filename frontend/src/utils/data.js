@@ -9,7 +9,7 @@ import product6 from "../assets/products/planner-01.png";
 // category images
 import cat1 from "../assets/categories/planner.png";
 import cat2 from "../assets/categories/pages.png";
-import cat3 from "../assets/categories/stationery.png";
+import cat3 from "../assets/categories/stationaryy.png";
 
 // slider images
 import slider1 from "../assets/banner/stationery-1.jpg";
@@ -21,6 +21,14 @@ import feature1 from "../assets/feature/personalplanner.jpeg";
 import feature2 from "../assets/feature/pages.jpeg";
 import feature3 from "../assets/feature/quality.jpeg";
 import feature4 from "../assets/feature/tree.jpeg";
+
+//payment images
+import visaIcon from "../assets/payments/visa.png"
+import mastercardIcon from "../assets/payments/masterdcard.png"
+import paypalIcon from "../assets/payments/paypal.png"
+
+//logo image
+import logo from "../assets/logo/logo_build_a_planner.png";
 
 export const sliderData = [
   {
@@ -44,9 +52,24 @@ export const sliderData = [
 ];
 
 export const categoriesData = [
-  { id: 0, title: "Planners", image: cat1, url: "" },
-  { id: 1, title: "Planner pages", image: cat2, url: "" },
-  { id: 2, title: "Stationery", image: cat3, url: "" },
+  {
+    id: 0,
+    title: "Planners",
+    image: cat1,
+    description: "Customize your planner to fit your lifestyle."
+  },
+  {
+    id: 1,
+    title: "Planner pages",
+    image: cat2,
+    description: "Refillable pages for flexible planning."
+  },
+  {
+    id: 2,
+    title: "Stationery",
+    image: cat3,
+    description: "Pens, markers, and accessories for your desk."
+  }
 ];
 
 export const productData = [
@@ -152,3 +175,11 @@ export const usersData = [
     role: "user",
   },
 ];
+
+export const paymentIcons = [
+  { id: 0, title: "Visa", image: visaIcon },
+  { id: 1, title: "MasterCard", image: mastercardIcon },
+  { id: 2, title: "PayPal", image: paypalIcon },
+];
+
+export const siteLogo = logo;

@@ -11,6 +11,7 @@ const CategoryCard = ({ val }) => {
         </span>
         <Card.Body>
           <h5 className="title">{val.title}</h5>
+          <p className="category-description">{val.description}</p>
         </Card.Body>
       </Card>
     </div>
