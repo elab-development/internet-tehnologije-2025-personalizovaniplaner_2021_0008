@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import logo from '../../assets/temp_logo2.png' 
 import Cart from '../Cart/Cart'
 import CategoryList from './CategoryList'
+import {useAuth} from '../../auth/AuthContext'
 
 const Header = () => {
 
@@ -21,6 +22,8 @@ const Header = () => {
     dropDownShow ? setDropDownShow(0) : setDropDownShow(id)
   }
 }
+
+const { user } = useAuth();
 
   return (
     <>
@@ -73,6 +76,10 @@ const Header = () => {
             <ListGroup horizontal className='justify-content-end'>
 
               <ListGroup.Item className='border-0'>
+                <Link
+                  to = {user ? '/profile' : '/login'}
+                  className='text-decoration-none text-clr'
+                  >
                 <span className='d-flex align-items-center'>
                   <span className='position-relative'>
                     <i class="bi bi-person"></i>
@@ -81,6 +88,7 @@ const Header = () => {
                     Account
                   </span>
                 </span>
+                </Link>
               </ListGroup.Item>
 
              

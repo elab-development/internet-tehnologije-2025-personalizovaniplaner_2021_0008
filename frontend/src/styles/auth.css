@@ -1,0 +1,82 @@
+/* auth.css - samo za login/register formu */
+.auth-wrapper {
+  height: 100vh;
+  background: linear-gradient(120deg, #e0eaff, #f6f9ff);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-box {
+  width: 800px;
+  max-width: 90%;
+  height: 420px;
+  background: white;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+  display: flex;
+}
+
+.form-side {
+  width: 50%;
+  padding: 40px;
+  transition: transform 0.6s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.overlay {
+  width: 50%;
+  background: var(--clr-primary);
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 100%;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.6s ease;
+  border-radius: 0 20px 20px 0;
+}
+
+.auth-box.active .form-side {
+  transform: translateX(100%);
+}
+
+.auth-box.active .overlay {
+  transform: translateX(-100%);
+  border-radius: 20px 0 0 20px;
+}
+
+/* Buttons inside auth forms */
+.auth-box button {
+  cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .auth-box {
+    flex-direction: column;
+    height: auto;
+  }
+  .form-side, .overlay {
+    width: 100%;
+    position: relative;
+    border-radius: 20px 20px 0 0;
+    transform: none !important;
+  }
+}
+
+.form-side input,
+.form-side button {
+  margin-bottom: 15px; /* prostor između inputa i dugmeta */
+}
+
+.form-side h2 {
+  margin-bottom: 20px; /* prostor između naslova i prvog inputa */
+}

@@ -133,3 +133,21 @@ export const featureData = [
     image:feature4,
   }
 ];
+
+/**Fake users base for testing */
+export const usersData = [
+  {
+    id: 1,
+    username: "admin",
+    email: "admin@test.com",
+    password: "admin123",
+    role: "admin",
+  },
+  {
+    id: 2,
+    username: "user",
+    email: "user@test.com",
+    password: "user123",
+    role: "user",
+  },
+];
