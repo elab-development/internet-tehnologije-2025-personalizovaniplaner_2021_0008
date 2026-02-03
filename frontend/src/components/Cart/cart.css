@@ -7,3 +7,46 @@
     top: 15px;
     right: 15px;
 }
+
+.cartOffcanvas .heading {
+    font-size: var(--fs-heading);
+    font-weight: 700;
+    color: var(--clr-heading);
+}
+
+.cartOffcanvas .sub-heading {
+    font-weight: 600;
+    color: var(--clr-heading);
+}
+
+.cartOffcanvas .body-text {
+    color: var(--clr-text);
+    font-size: var(--fs-body);
+}
+
+.cart-total {
+    background: var(--clr-bg);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.cart-total .sub-heading {
+    font-size: var(--fs-sub-heading);
+}
+
+.checkout-btn {
+    font-weight: 600;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+.checkout-btn:hover {
+    background-color: var(--clr-primary);
+    border-color: var(--clr-primary);
+}
+
+@media (max-width: 576px) {
+    .cartOffcanvas {
+        width: 100% !important;
+    }
+}

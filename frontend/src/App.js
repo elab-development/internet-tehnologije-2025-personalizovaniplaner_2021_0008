@@ -9,8 +9,12 @@ import Profile from './page/Profile/Profile';
 import AuthPage from './components/Auth/AuthPage';
 import ProtectedRoute from './auth/ProtectedRoute';
 
+import ProductDetail from './page/ProductDetail/ProductDetail';
+import { CartProvider, useCart } from './contexts/CartContext';
 
-function App() {
+function AppContent() {
+  const { addToCart } = useCart();
+
   return (
     <>
      <AuthProvider>
@@ -19,6 +23,7 @@ function App() {
       <Routes>
         <Route path = '/' element = {<Home />}/>
         <Route path = '/about' element = {<About />}/>
+        <Route path = '/product/:productId' element = {<ProductDetail addToCart={addToCart} />}/>
         <Route path = '/login' element = {<AuthPage />}/>
         <Route 
           path='/profile'
@@ -29,6 +34,14 @@ function App() {
       
     </AuthProvider>
     </>
+  );
+}
+
+function App() {
+  return (
+    <CartProvider>
+      <AppContent />
+    </CartProvider>
   );
 }
 

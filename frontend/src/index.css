@@ -8,8 +8,15 @@
   --clr-primary: #854bdb;
   --clr-secondary: #85dbee;
   --clr-bg: #f0eacf;
+  --clr-gradient-purple: linear-gradient(135deg, #bb9dc8 0%, #ebf5f6 100%);
  
   --clr-white: #fff;
+  --clr-light-gray: #f5f7fa;
+  --clr-border: #e8e8e8;
+  --clr-dark: #2c3e50;
+  --clr-darker: #1a252f;
+  --clr-light: #999;
+  --clr-muted: #666;
  
   --clr-text: #4b5563;
   --clr-heading: #031403;
