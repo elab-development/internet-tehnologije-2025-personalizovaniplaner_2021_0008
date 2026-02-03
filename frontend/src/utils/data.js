@@ -57,16 +57,14 @@ export const productData = [
     offerPrice: 9.9,
     cat: "Notebooks",
     image: product1,
-    rating: 5,
   },
   {
     id: 1,
     title: "Minimal A4 Notebook",
     price: 18,
-    offerPrice: 0,
+    offerPrice: null,
     cat: "Notebooks",
     image: product2,
-    rating: 4,
   },
   {
     id: 2,
@@ -75,16 +73,14 @@ export const productData = [
     offerPrice: 13.5,
     cat: "Markers",
     image: product3,
-    rating: 5,
   },
   {
     id: 3,
     title: "Black Ballpoint Pen",
     price: 1.2,
-    offerPrice: 0,
+    offerPrice: null,
     cat: "Pens",
     image: product4,
-    rating: 4,
   },
   {
     id: 4,
@@ -93,7 +89,6 @@ export const productData = [
     offerPrice: 1.5,
     cat: "Markers",
     image: product5,
-    rating: 4,
   },
   {
     id: 5,
@@ -102,7 +97,6 @@ export const productData = [
     offerPrice: 19.9,
     cat: "Planners",
     image: product6,
-    rating: 5,
   },
 ];
 
