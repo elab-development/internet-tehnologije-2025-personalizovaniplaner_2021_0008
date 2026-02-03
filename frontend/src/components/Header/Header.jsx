@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../Header/header.css'
 import { Col, Container, Row, Dropdown, InputGroup, Form, ListGroup, Offcanvas, Navbar, Nav, Button, NavDropdown} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import logo from '../../assets/temp_logo2.png' 
+import logo from '../../assets/logo/logo_build_a_planner.png' 
 import Cart from '../Cart/Cart'
 import CategoryList from './CategoryList'
 import {useAuth} from '../../auth/AuthContext'
@@ -48,7 +48,9 @@ const { user } = useAuth();
       <Container>
         <Row className='align-items-center'>
           <Col xl = {2} lg = {3} md = {6} sm = {5} xs = {5}>
-              <img src={logo} className='img-fluid' alt='logo' style={{maxWidth: '80px'}}/>
+              <Link to='/' className='d-inline-block'>
+                <img src={logo} className='img-fluid' alt='logo' style={{maxWidth: '80px'}}/>
+              </Link>
           </Col>
 
           <Col xl = {5} lg = {4} className='d-none d-lg-block'>
@@ -67,8 +69,8 @@ const { user } = useAuth();
           </Col>
 
           <Col xl = {3} lg = {2} className='d-none d-lg-block'>
-              <button type='button' className='btn secondary-btn'>
-                <i class="bi bi-globe-europe-africa"></i> Location
+              <button type='button' className='btn secondary-btn' disabled={true} onHover = 'false'>
+                <i class="bi bi-globe-europe-africa"></i> Location: RS
               </button>
           </Col>
 
@@ -185,51 +187,51 @@ const { user } = useAuth();
                   >
                     <Row>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                        <h6 className='primary-text sub-heading mb-1 ms-2'>
+                        <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
                           All Planners
-                        </h6>
-                        <a className='dropdown-item' href="#">
+                        </Link>
+                        <Link to="/" className='dropdown-item'>
                           Regular Planners
-                        </a>  
-                        <a className='dropdown-item' href="#">
+                        </Link>  
+                        <Link to="/" className='dropdown-item'>
                           Personalized Planners
-                        </a>
+                        </Link>
                       </Col>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                        <h6 className='primary-text sub-heading mb-1 ms-2'>
+                        <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
                           Planner Pages
-                        </h6>
-                        <a className='dropdown-item' href="#">
+                        </Link>
+                        <Link to="/" className='dropdown-item'>
                           Daily pages
-                        </a>  
-                        <a className='dropdown-item' href="#">
+                        </Link>  
+                        <Link to="/" className='dropdown-item'>
                           Calendar pages
-                        </a>
-                        <a className='dropdown-item' href="#">
+                        </Link>
+                        <Link to="/" className='dropdown-item'>
                           Trackers
-                        </a>
+                        </Link>
                       </Col>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                        <h6 className='primary-text sub-heading mb-1 ms-2'>
+                        <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
                           Stationery
-                        </h6>
-                        <a className='dropdown-item' href="#">
+                        </Link>
+                        <Link to="/" className='dropdown-item'>
                           Planner separators
-                        </a>  
-                        <a className='dropdown-item' href="#">
+                        </Link>  
+                        <Link to="/" className='dropdown-item'>
                           Pens
-                        </a>
-                        <a className='dropdown-item' href="#">
+                        </Link>
+                        <Link to="/" className='dropdown-item'>
                           Pockets
-                        </a>
+                        </Link>
                       </Col>
                       <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                        <h6 className='primary-text sub-heading mb-1 ms-2'>
+                        <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
                           Special collections
-                        </h6>
-                        <a className='dropdown-item' href="#">
+                        </Link>
+                        <Link to="/" className='dropdown-item'>
                           Valentine's Day
-                        </a>
+                        </Link>
                       </Col>
                     </Row>
 
