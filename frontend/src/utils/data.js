@@ -144,4 +144,11 @@ export const usersData = [
     password: "user123",
     role: "user",
   },
+  {
+    id: 3,
+    username: "tester",
+    email: "tester@test.com",
+    password: "Tester123!",
+    role: "user",
+  },
 ];

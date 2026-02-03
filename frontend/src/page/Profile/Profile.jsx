@@ -6,12 +6,18 @@ function Profile() {
   const navigate = useNavigate();
 
   return (
-    <div className="container mt-5">
+    <div className="profile-admin-container">
       <h2>User Profile</h2>
-      <p><b>Username:</b> {user.username}</p>
-      <p><b>Email:</b> {user.email}</p>
+      <div className="info-box">
+        <span>Username:</span>
+        <span>{user.username}</span>
+      </div>
+      <div className="info-box">
+        <span>Email:</span>
+        <span>{user.email}</span>
+      </div>
       <button
-        className="btn btn-danger"
+        className="btn-logout"
         onClick={() => {
           logout();
           navigate("/");

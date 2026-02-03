@@ -42,6 +42,8 @@
   align-items: center;
   transition: transform 0.6s ease;
   border-radius: 0 20px 20px 0;
+  padding: 40px 20px;
+  gap: 20px;
 }
 
 .auth-box.active .form-side {
@@ -58,19 +60,55 @@
   cursor: pointer;
 }
 
-/* Responsive */
+
+/* Mobile sliding effect - gore-dole */
+
+
+
+/* Mobile responsive - bez slidinga */
 @media (max-width: 768px) {
+  .auth-wrapper {
+    flex-direction: column;
+    height: auto;        /* fleksibilna visina */
+    padding-top: 80px;   /* prostor za header */
+    padding-bottom: 40px;
+  }
+
   .auth-box {
     flex-direction: column;
-    height: auto;
-  }
-  .form-side, .overlay {
     width: 100%;
-    position: relative;
+    max-width: 90%;
+    height: auto;        /* prilagođava se sadržaju */
+  }
+
+  .form-side,
+  .overlay {
+    width: 100%;
+    height: auto;        /* fleksibilno po sadržaju */
+    position: relative;  /* ostaje relative */
     border-radius: 20px 20px 0 0;
-    transform: none !important;
+    transform: none !important; /* uklanja sliding */
+  }
+
+  /* Razmak unutar forme za mobilni */
+  .form-side input,
+  .form-side button {
+    margin-bottom: 20px; 
+  }
+
+  .form-side h2 {
+    margin-bottom: 25px; 
+  }
+
+  .overlay {
+    padding: 30px 20px;
+    gap: 15px;
   }
 }
+
+
+
+
 
 .form-side input,
 .form-side button {
@@ -79,4 +117,136 @@
 
 .form-side h2 {
   margin-bottom: 20px; /* prostor između naslova i prvog inputa */
+}
+
+/* Profile/Admin container */
+.profile-admin-container {
+  max-width: 800px;
+  width: 90%;
+  margin: 50px auto;
+  background: var(--clr-box2);
+  border-radius: 15px;
+  padding: 40px 30px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Naslov centriran */
+.profile-admin-container h2 {
+  text-align: center;
+  font-size: var(--fs-main);
+  color: var(--clr-primary);
+  margin-bottom: 30px;
+}
+
+/* Podaci u box-ovima */
+.profile-admin-container .info-box {
+  background: var(--clr-box3);
+  padding: 20px;
+  border-radius: 10px;
+  font-size: var(--fs-body);
+  color: var(--clr-text);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+}
+
+/* Lista stavki za admin */
+.profile-admin-container .list-group {
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.05);
+}
+
+.profile-admin-container .list-group-item {
+  padding: 15px 20px;
+  font-size: var(--fs-body);
+  color: var(--clr-heading);
+  border-bottom: 1px solid var(--clr-border);
+}
+
+.profile-admin-container .list-group-item:last-child {
+  border-bottom: none;
+}
+
+/* Logout dugme */
+.profile-admin-container .btn-logout {
+  margin-top: 30px;
+  align-self: center;
+  width: 200px;
+  padding: 10px 15px;
+  font-size: var(--fs-body);
+  font-weight: bold;
+  background: var(--clr-primary);
+  color: var(--clr-white);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.profile-admin-container .btn-logout:hover {
+  background: var(--clr-secondary);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .profile-admin-container {
+    padding: 30px 20px;
+    gap: 15px;
+  }
+
+  .profile-admin-container h2 {
+    font-size: var(--fs-heading);
+    margin-bottom: 20px;
+  }
+
+  .profile-admin-container .info-box {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .profile-admin-container .btn-logout {
+    width: 100%;
+  }
+}
+
+
+/* Custom auth buttons (Login / Register) */
+.auth-box .btn-primary {
+  background: var(--clr-primary);
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  padding: 10px 0;
+  transition: all 0.25s ease;
+}
+
+.auth-box .btn-primary:hover {
+  background: var(--clr-secondary);
+  color: var(--clr-white);
+  transform: translateY(-1px);
+}
+
+/* Dugme u ljubicastom overlay delu */
+.overlay button {
+  border: 2px solid var(--clr-white);
+  background: transparent;
+  color: var(--clr-white);
+  border-radius: 10px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.overlay button:hover {
+  background: var(--clr-white);
+  color: var(--clr-primary);
+  transform: translateY(-1px);
 }

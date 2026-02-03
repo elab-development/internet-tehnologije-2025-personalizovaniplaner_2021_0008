@@ -8,9 +8,9 @@ import { AuthProvider } from "./auth/AuthContext";
 import Profile from './page/Profile/Profile';
 import AuthPage from './components/Auth/AuthPage';
 import ProtectedRoute from './auth/ProtectedRoute';
-
 import ProductDetail from './page/ProductDetail/ProductDetail';
 import { CartProvider, useCart } from './contexts/CartContext';
+import AdminPanel from './page/Admin/AdminPanel';
 
 function AppContent() {
   const { addToCart } = useCart();
@@ -28,6 +28,9 @@ function AppContent() {
         <Route 
           path='/profile'
           element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
+        <Route 
+          path='/admin'
+          element={<ProtectedRoute> <AdminPanel/> </ProtectedRoute>} />
           
       </Routes>
     <Footer />
