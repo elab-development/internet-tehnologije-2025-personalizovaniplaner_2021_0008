@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import '../Header/header.css'
 import { Col, Container, Row, Dropdown, InputGroup, Form, ListGroup, Offcanvas, Navbar, Nav, Button, NavDropdown} from 'react-bootstrap'
 import { Link } from 'react-router-dom'
-import logo from '../../assets/temp_logo2.png' /*promenicemo posle*/
+import logo from '../../assets/temp_logo2.png' 
 import Cart from '../Cart/Cart'
 import CategoryList from './CategoryList'
 
@@ -28,23 +28,13 @@ const Header = () => {
       <Container>
         <Row className = 'align-items-center'>
           <Col md = {6} sm = {6} xs = {6}>
-            <p>
+            <p className='text-white'>
               Make your planner - pave your own way!
             </p>
           </Col>
           <Col md = {6} sm = {6} xs = {6}>
             <div className='text-end'>
-              <Dropdown>
-                <Dropdown.Toggle id="dropdown-menu-align-start" className='fw-bold text-white'>
-                  English
-                </Dropdown.Toggle>
-
-                <Dropdown.Menu>
-                  <Dropdown.Item href="#/action-1">English</Dropdown.Item>
-                  <Dropdown.Item href="#/action-2">Serbian</Dropdown.Item>
-                  <Dropdown.Item href="#/action-3">German</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
+              <span><i className="bi bi-journal-richtext text-white fs-4"></i></span>
             </div>
           </Col>
         </Row>
@@ -93,20 +83,7 @@ const Header = () => {
                 </span>
               </ListGroup.Item>
 
-              <ListGroup.Item className='border-0'>
-                <span className='d-flex align-items-center'>
-                  <span className='position-relative'>
-                    <i class="bi bi-heart"></i>
-                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                      3
-                    <span class="visually-hidden">unread messages</span>
-                    </span> 
-                  </span>
-                  <span className='ms-2 d-none d-sm-block body-text'>
-                    Whishlist
-                  </span>
-                </span>
-              </ListGroup.Item>
+             
               
               <ListGroup.Item className='border-0'
               onClick={() => setCartBox(true)}
@@ -248,16 +225,6 @@ const Header = () => {
                       </Col>
                     </Row>
 
-                   {/* <NavDropdown.Item href="#action3">
-                      Action
-                    </NavDropdown.Item>
-                    <NavDropdown.Item href="#action4">
-                      Another action
-                    </NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item href="#action5">
-                      Something 
-                    </NavDropdown.Item>*/}
                   </NavDropdown>
 
                   <Nav.Link as={Link} to="/about">About Us</Nav.Link>

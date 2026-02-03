@@ -16,7 +16,7 @@ import slider1 from "../assets/banner/stationery-1.jpg";
 import slider2 from "../assets/banner/stationery-2.jpg";
 import slider3 from "../assets/banner/stationery-3.jpg";
 
-// feature images (you can replace these with actual image paths)
+// feature images 
 import feature1 from "../assets/feature/personalplanner.jpeg";
 import feature2 from "../assets/feature/pages.jpeg";
 import feature3 from "../assets/feature/quality.jpeg";
