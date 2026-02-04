@@ -6,7 +6,8 @@ import logo from '../../assets/logo/logo_build_a_planner.png';
 import Cart from '../Cart/Cart';
 import CategoryList from './CategoryList';
 import { useAuth } from '../../auth/AuthContext';
-import { useSearch } from '../../contexts/SearchContext';   // NOVO
+import { useSearch } from '../../contexts/SearchContext';
+import { useCart } from '../../contexts/CartContext';   // NOVO
 
 const Header = () => {
   const [cartBox, setCartBox] = useState(false);
@@ -23,7 +24,9 @@ const Header = () => {
   };
 
   const { user } = useAuth();
-  const { query, setQuery } = useSearch();   // NOVO
+  const { query, setQuery } = useSearch();
+  const { getTotalItems } = useCart();   // NOVO
+  const cartCount = getTotalItems();     // NOVO
 
   return (
     <>
@@ -62,8 +65,8 @@ const Header = () => {
                     aria-label="Search"
                     type='search'
                     className='rounded-1 py-2'
-                    value={query}                 // NOVO
-                    onChange={(e) => setQuery(e.target.value)}   // NOVO
+                    value={query}
+                    onChange={(e) => setQuery(e.target.value)}
                   />
                   <i className="bi bi-search-heart position-absolute"></i>
                 </InputGroup>
@@ -94,13 +97,14 @@ const Header = () => {
                   </Link>
                 </ListGroup.Item>
 
+                {/* Cart with dynamic badge */}
                 <ListGroup.Item className='border-0' onClick={() => setCartBox(true)}>
                   <span className='d-flex align-items-center'>
                     <span className='position-relative'>
                       <i className="bi bi-bag-heart"></i>
                       <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                        6
-                        <span className="visually-hidden">unread messages</span>
+                        {cartCount}
+                        <span className="visually-hidden">items in cart</span>
                       </span>
                     </span>
                     <span className='ms-2 d-none d-sm-block body-text'>Cart</span>
@@ -151,8 +155,8 @@ const Header = () => {
                             aria-label="Search"
                             type='search'
                             className='rounded-1 py-2'
-                            value={query}                
-                            onChange={(e) => setQuery(e.target.value)}   
+                            value={query}
+                            onChange={(e) => setQuery(e.target.value)}
                           />
                           <i className="bi bi-search-heart position-absolute"></i>
                         </InputGroup>

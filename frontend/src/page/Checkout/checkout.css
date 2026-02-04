@@ -1,0 +1,114 @@
+.checkout-container {
+    max-width: 800px;
+    margin: 0 auto;
+    background: var(--clr-bg);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+
+.checkout-container h2 {
+    font-size: var(--fs-heading);
+    font-weight: 700;
+    color: var(--clr-heading);
+    margin-bottom: 20px;
+}
+
+.checkout-container p {
+    font-size: var(--fs-body);
+    color: var(--clr-text);
+    margin-bottom: 25px;
+}
+
+.checkout-container .form-label {
+    font-weight: 600;
+    color: var(--clr-heading);
+}
+
+.checkout-container .form-control,
+.checkout-container .form-select {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+
+.checkout-container .btn-primary {
+    font-weight: 600;
+    border-radius: 6px;
+    margin-top: 15px;
+    background-color: rgb(247, 216, 247);
+    border-color: #6d1999;
+    transition: all 0.3s ease;
+}
+
+.checkout-container .btn-primary:hover {
+    background-color: var(--clr-heading);
+    border-color: var(--clr-heading);
+}
+
+.checkout-summary {
+    background: linear-gradient(to right, #f3e8f9, var(--clr-bg)); 
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin-bottom: 20px;
+}
+
+.checkout-summary .list-group-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: var(--fs-body);
+    color: var(--clr-text);
+    border: none;
+    padding: 12px 15px;
+    border-radius: 8px; 
+    background: rgba(255,255,255,0.6); 
+    margin-bottom: 10px;
+}
+
+.checkout-summary .list-group-item div:first-child {
+    flex: 1;
+    padding-right: 15px;
+    border-right: 2px solid #d0b3e6; 
+}
+
+.checkout-summary .list-group-item div:last-child {
+    flex: 0 0 100px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--clr-heading);
+}
+
+.checkout-summary .totals {
+    margin-top: 20px;
+    padding-top: 15px;
+    border-top: 2px solid #d0b3e6;
+}
+
+.checkout-summary .totals span {
+    font-size: var(--fs-body);
+    font-weight: 600;
+    color: var(--clr-heading);
+}
+
+@media (max-width: 576px) {
+    .checkout-container {
+        padding: 20px;
+    }
+    .checkout-summary {
+        padding: 15px;
+    }
+    .checkout-summary .list-group-item {
+        flex-direction: column;
+        text-align: left;
+    }
+    .checkout-summary .list-group-item div:first-child {
+        border-right: none;
+        padding-right: 0;
+        margin-bottom: 8px;
+    }
+    .checkout-summary .list-group-item div:last-child {
+        text-align: left;
+    }
+}

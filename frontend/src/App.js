@@ -12,7 +12,8 @@ import ProductDetail from './page/ProductDetail/ProductDetail';
 import { CartProvider, useCart } from './contexts/CartContext';
 import AdminPanel from './page/Admin/AdminPanel';
 import PersonalPlannerDetail from './page/PersonalPlannerDetail/PersonalPlannerDetail';
-import { SearchProvider } from './contexts/SearchContext';  
+import { SearchProvider } from './contexts/SearchContext';
+import Checkout from './page/Checkout/Checkout';  
 
 function AppContent() {
   const { addToCart } = useCart();
@@ -28,7 +29,8 @@ function AppContent() {
           <Route path='/personal-planner/:productId' element={<PersonalPlannerDetail addToCart={addToCart} />}/>
           <Route path='/login' element={<AuthPage />}/>
           <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>} />
-          <Route path='/admin' element={<ProtectedRoute><AdminPanel/></ProtectedRoute>} />
+          <Route path='/admin' element={<ProtectedRoute role="admin"><AdminPanel/></ProtectedRoute>} />
+          <Route path='/checkout' element={<ProtectedRoute><Checkout/></ProtectedRoute>} /> 
         </Routes>
         <Footer />
       </AuthProvider>
@@ -39,7 +41,7 @@ function AppContent() {
 function App() {
   return (
     <CartProvider>
-      <SearchProvider> 
+      <SearchProvider>
         <AppContent />
       </SearchProvider>
     </CartProvider>
@@ -47,4 +49,3 @@ function App() {
 }
 
 export default App;
-
