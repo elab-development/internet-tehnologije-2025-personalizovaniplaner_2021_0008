@@ -12,32 +12,26 @@ import ProductDetail from './page/ProductDetail/ProductDetail';
 import { CartProvider, useCart } from './contexts/CartContext';
 import AdminPanel from './page/Admin/AdminPanel';
 import PersonalPlannerDetail from './page/PersonalPlannerDetail/PersonalPlannerDetail';
+import { SearchProvider } from './contexts/SearchContext';  
 
 function AppContent() {
   const { addToCart } = useCart();
 
   return (
     <>
-     <AuthProvider>
-      
-    <Header />
-      <Routes>
-        <Route path = '/' element = {<Home />}/>
-        <Route path = '/about' element = {<About />}/>
-        <Route path = '/product/:productId' element = {<ProductDetail addToCart={addToCart} />}/>
-        <Route path = '/personal-planner/:productId' element = {<PersonalPlannerDetail addToCart={addToCart} />}/>
-        <Route path = '/login' element = {<AuthPage />}/>
-        <Route 
-          path='/profile'
-          element={<ProtectedRoute> <Profile/> </ProtectedRoute>} />
-        <Route 
-          path='/admin'
-          element={<ProtectedRoute> <AdminPanel/> </ProtectedRoute>} />
-          
-      </Routes>
-    <Footer />
-      
-    </AuthProvider>
+      <AuthProvider>
+        <Header />
+        <Routes>
+          <Route path='/' element={<Home />}/>
+          <Route path='/about' element={<About />}/>
+          <Route path='/product/:productId' element={<ProductDetail addToCart={addToCart} />}/>
+          <Route path='/personal-planner/:productId' element={<PersonalPlannerDetail addToCart={addToCart} />}/>
+          <Route path='/login' element={<AuthPage />}/>
+          <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>} />
+          <Route path='/admin' element={<ProtectedRoute><AdminPanel/></ProtectedRoute>} />
+        </Routes>
+        <Footer />
+      </AuthProvider>
     </>
   );
 }
@@ -45,9 +39,12 @@ function AppContent() {
 function App() {
   return (
     <CartProvider>
-      <AppContent />
+      <SearchProvider> 
+        <AppContent />
+      </SearchProvider>
     </CartProvider>
   );
 }
 
 export default App;
+

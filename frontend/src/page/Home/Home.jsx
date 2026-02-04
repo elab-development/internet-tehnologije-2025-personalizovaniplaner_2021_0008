@@ -6,9 +6,18 @@ import { featureData, productData } from '../../utils/data';
 import { useCart } from '../../contexts/CartContext';
 import './Home.css';
 import Categories from '../../components/Categories/Categories';
+import { useSearch } from '../../contexts/SearchContext';  
 
 const Home = () => {
   const { addToCart } = useCart();
+  const { query } = useSearch();   
+
+  // filtriranje proizvoda
+  const filteredProducts = productData.filter(product =>
+  product.title.toLowerCase().includes(query.toLowerCase()) ||
+  product.cat.toLowerCase().includes(query.toLowerCase())
+);
+
 
   return (
     <>
@@ -55,13 +64,15 @@ const Home = () => {
             </Col>
           </Row>
           <Row>
-            {
-              productData.map((product, index) => (
+            {filteredProducts.length > 0 ? (
+              filteredProducts.map((product, index) => (
                 <Col lg={4} md={6} sm={6} xs={12} key={index} className="mb-4">
                   <ProductCard product={product} onAddToCart={addToCart} />
                 </Col>
               ))
-            }
+            ) : (
+              <p className="text-center">No products found.</p>
+            )}
           </Row>
         </Container>
       </section>
