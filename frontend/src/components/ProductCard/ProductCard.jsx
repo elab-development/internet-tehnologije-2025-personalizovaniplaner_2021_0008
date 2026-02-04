@@ -8,10 +8,12 @@ const ProductCard = ({ product, onAddToCart }) => {
     ? Math.round(((product.price - product.offerPrice) / product.price) * 100)
     : 0;
 
+    const detailsLink = product.cat === 'Planners' ? `/personal-planner/${product.id}` : `/product/${product.id}`;
+
   return (
     <div className="product-card">
       <div className="product-card-image">
-        <Link to={`/product/${product.id}`} className="product-link">
+        <Link to={detailsLink} className="product-link">
           <img src={product.image} alt={product.title} />
         </Link>
         {product.offerPrice && (
@@ -26,7 +28,7 @@ const ProductCard = ({ product, onAddToCart }) => {
           <span className="category-tag">{product.cat}</span>
         </div>
 
-        <Link to={`/product/${product.id}`} className="product-link-title">
+        <Link to={detailsLink} className="product-link-title">
           <h5 className="product-card-title">{product.title}</h5>
         </Link>
 
@@ -48,7 +50,7 @@ const ProductCard = ({ product, onAddToCart }) => {
         </div>
 
         <div className="product-card-actions">
-          <Link to={`/product/${product.id}`} className="btn-view-details">
+          <Link to={detailsLink} className="btn-view-details">
             View Details
           </Link>
           <Button 

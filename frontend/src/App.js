@@ -11,6 +11,7 @@ import ProtectedRoute from './auth/ProtectedRoute';
 import ProductDetail from './page/ProductDetail/ProductDetail';
 import { CartProvider, useCart } from './contexts/CartContext';
 import AdminPanel from './page/Admin/AdminPanel';
+import PersonalPlannerDetail from './page/PersonalPlannerDetail/PersonalPlannerDetail';
 
 function AppContent() {
   const { addToCart } = useCart();
@@ -24,6 +25,7 @@ function AppContent() {
         <Route path = '/' element = {<Home />}/>
         <Route path = '/about' element = {<About />}/>
         <Route path = '/product/:productId' element = {<ProductDetail addToCart={addToCart} />}/>
+        <Route path = '/personal-planner/:productId' element = {<PersonalPlannerDetail addToCart={addToCart} />}/>
         <Route path = '/login' element = {<AuthPage />}/>
         <Route 
           path='/profile'
