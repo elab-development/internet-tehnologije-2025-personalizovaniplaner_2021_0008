@@ -183,17 +183,18 @@ const Header = () => {
                         <Row>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
                             <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
-                              All Planners
+                              Personalized Planners
                             </Link>
-                            <Link to="/" className='dropdown-item'>Regular Planners</Link>
-                            <Link to="/" className='dropdown-item'>Personalized Planners</Link>
+                            <Link to="/" className='dropdown-item'>Large Planners (A4)</Link>
+                            <Link to="/" className='dropdown-item'>Small Planners (A5)</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
                             <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
                               Planner Pages
                             </Link>
                             <Link to="/" className='dropdown-item'>Daily pages</Link>
-                            <Link to="/" className='dropdown-item'>Calendar pages</Link>
+                            <Link to="/" className='dropdown-item'>Weekly pages</Link>
+                            <Link to="/" className='dropdown-item'>Monthly pages</Link>
                             <Link to="/" className='dropdown-item'>Trackers</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
@@ -201,8 +202,8 @@ const Header = () => {
                               Stationery
                             </Link>
                             <Link to="/" className='dropdown-item'>Planner separators</Link>
-                            <Link to="/" className='dropdown-item'>Pens</Link>
-                            <Link to="/" className='dropdown-item'>Pockets</Link>
+                            <Link to="/" className='dropdown-item'>Stickers</Link>
+                            <Link to="/" className='dropdown-item'>Writing tools</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
                             <Link to="/" className="dropdown-item primary-text sub-heading mb-1">

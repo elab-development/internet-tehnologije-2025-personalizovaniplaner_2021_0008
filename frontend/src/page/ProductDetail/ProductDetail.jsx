@@ -106,6 +106,7 @@ const ProductDetail = ({ addToCart }) => {
               <div className="description-section mb-4">
                 <h5 className="sub-heading mb-3">Product Details</h5>
                 <p className="body-text mb-3">
+                  {product.description || 'Opis proizvoda nije dostupan.'}
                   High-quality {product.title.toLowerCase()} perfect for your organization and productivity needs.
                   Made with premium materials to ensure durability and long-lasting use.
                 </p>
