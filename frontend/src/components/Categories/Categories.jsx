@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import { categoriesData } from '../../utils/data';
 import CategoryCard from '../Cards/CategoryCard';
 import CustomSlider from '../CustomSlider/CustomSlider';
@@ -36,7 +37,7 @@ const Categories = () => {
           <Col md="12" className='mb-3'> 
             <h1 className='heading'>Top Categories</h1>
             <div className="text-center mt-2"> 
-              <button className='bt primary-btn'>View All</button>
+              <Link to="/shop" className='bt primary-btn text-decoration-none'>View All</Link>
             </div>
           </Col>
           <Col md="12">

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Dropdown } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { categoriesData } from "../../utils/data";
 
 
@@ -10,6 +11,20 @@ const CategoryList = () => {
     const handleClick=()=>{
         if(window.innerWidth <= 1199){
             setShowCat(!showCat);
+        }
+    }
+
+    //Pronalazenje rute za svaku kategoriju
+    const getCategoryRoute = (title) => {
+        switch(title.toLowerCase()) {
+            case "planners":
+                return "/shop/planners";
+            case "planner pages":
+                return "/shop/pages";
+            case "stationery":
+                return "/shop/stationery";
+            default:
+                return "/shop";
         }
     }
 
@@ -31,9 +46,9 @@ const CategoryList = () => {
       <Dropdown.Menu align='start' show={showCat}> 
         {categoriesData.map((val, index)=>{
             return(
-        <Dropdown.Item href="#/action-1" key={index} className="body-text py-2">
+        <Link to={getCategoryRoute(val.title)} key={index} className="dropdown-item body-text py-2">
         {val.title}
-        </Dropdown.Item>
+        </Link>
             )
         })}
       </Dropdown.Menu>
