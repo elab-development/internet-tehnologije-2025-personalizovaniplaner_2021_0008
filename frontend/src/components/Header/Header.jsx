@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import '../Header/header.css';
 import { Col, Container, Row, InputGroup, Form, ListGroup, Offcanvas, Navbar, Nav, NavDropdown } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo/logo_build_a_planner.png';
 import Cart from '../Cart/Cart';
 import CategoryList from './CategoryList';
@@ -13,6 +13,7 @@ const Header = () => {
   const [cartBox, setCartBox] = useState(false);
   const [showNavBar, setShowNavBar] = useState(false);
   const [dropDownShow, setDropDownShow] = useState(0);
+  const navigate = useNavigate();
 
   const handleDropDown = (type, id) => {
     if (window.innerWidth >= 1199) {
@@ -27,6 +28,14 @@ const Header = () => {
   const { query, setQuery } = useSearch();
   const { getTotalItems } = useCart();   // NOVO
   const cartCount = getTotalItems();     // NOVO
+
+  const handleSearchSubmit = (e) => {
+    if (e.key === 'Enter' || e.type === 'click') {
+      if (query.trim()) {
+        navigate('/shop');
+      }
+    }
+  };
 
   return (
     <>
@@ -67,8 +76,9 @@ const Header = () => {
                     className='rounded-1 py-2'
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
+                    onKeyDown={handleSearchSubmit}
                   />
-                  <i className="bi bi-search-heart position-absolute"></i>
+                  <i className="bi bi-search-heart position-absolute" style={{cursor: 'pointer'}} onClick={handleSearchSubmit}></i>
                 </InputGroup>
               </div>
             </Col>
@@ -97,7 +107,7 @@ const Header = () => {
                   </Link>
                 </ListGroup.Item>
 
-                {/* Cart with dynamic badge */}
+                {/*Ikonica za korpu sa brojem koji se menja */}
                 <ListGroup.Item className='border-0' onClick={() => setCartBox(true)}>
                   <span className='d-flex align-items-center'>
                     <span className='position-relative'>
@@ -157,8 +167,9 @@ const Header = () => {
                             className='rounded-1 py-2'
                             value={query}
                             onChange={(e) => setQuery(e.target.value)}
+                            onKeyDown={handleSearchSubmit}
                           />
-                          <i className="bi bi-search-heart position-absolute"></i>
+                          <i className="bi bi-search-heart position-absolute" style={{cursor: 'pointer'}} onClick={handleSearchSubmit}></i>
                         </InputGroup>
                       </div>
                       <button className='btn btn-light rounded-1 w-100 mb-3' disabled={true}>
@@ -170,7 +181,9 @@ const Header = () => {
                     </div>
 
                     <Nav className="justify-content-start flex-grow-1 pe-3">
+                      {/*Home u meniju*/}
                       <Nav.Link as={Link} to="/">Home</Nav.Link>
+                      {/*Shop u meniju*/}
                       <NavDropdown
                         className='dropdown-fullwidth'
                         title="Shop"
@@ -182,41 +195,41 @@ const Header = () => {
                       >
                         <Row>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop/planners" className="dropdown-item primary-text sub-heading mb-1">
                               Personalized Planners
                             </Link>
-                            <Link to="/" className='dropdown-item'>Large Planners (A4)</Link>
-                            <Link to="/" className='dropdown-item'>Small Planners (A5)</Link>
+                            <Link to="/shop/planners/largeplanners" className='dropdown-item'>Large Planners (A4)</Link>
+                            <Link to="/shop/planners/smallplanners" className='dropdown-item'>Small Planners (A5)</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop/pages" className="dropdown-item primary-text sub-heading mb-1">
                               Planner Pages
                             </Link>
-                            <Link to="/" className='dropdown-item'>Daily pages</Link>
-                            <Link to="/" className='dropdown-item'>Weekly pages</Link>
-                            <Link to="/" className='dropdown-item'>Monthly pages</Link>
-                            <Link to="/" className='dropdown-item'>Trackers</Link>
+                            <Link to="/shop/pages/daily" className='dropdown-item'>Daily pages</Link>
+                            <Link to="/shop/pages/weekly" className='dropdown-item'>Weekly pages</Link>
+                            <Link to="/shop/pages/monthly" className='dropdown-item'>Monthly pages</Link>
+                            <Link to="/shop/pages/trackers" className='dropdown-item'>Trackers</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop/stationery" className="dropdown-item primary-text sub-heading mb-1">
                               Stationery
                             </Link>
-                            <Link to="/" className='dropdown-item'>Planner separators</Link>
-                            <Link to="/" className='dropdown-item'>Stickers</Link>
-                            <Link to="/" className='dropdown-item'>Writing tools</Link>
+                            <Link to="/shop/stationery/separators" className='dropdown-item'>Planner separators</Link>
+                            <Link to="/shop/stationery/stickers" className='dropdown-item'>Stickers</Link>
+                            <Link to="/shop/stationery/writingtool" className='dropdown-item'>Writing tools</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/" className="dropdown-item primary-text sub-heading mb-1">
-                              Special collections
+                            <Link to="/shop" className="dropdown-item primary-text sub-heading mb-1">
+                              All Products
                             </Link>
-                        <Link to="/" className='dropdown-item'>
-                          Valentine's Day
+                        <Link to="/shop" className='dropdown-item'>
+                          View Shop
                         </Link>
                       </Col>
                     </Row>
 
                   </NavDropdown>
-
+                  {/*About u meniju*/}
                   <Nav.Link as={Link} to="/about">About Us</Nav.Link>
                 </Nav>
               </Offcanvas.Body>

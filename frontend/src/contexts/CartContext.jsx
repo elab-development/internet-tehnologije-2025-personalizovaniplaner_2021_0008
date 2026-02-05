@@ -11,14 +11,23 @@ export const CartProvider = ({ children }) => {
       const existingItem = prevItems.find(item => item.id === product.id);
       
       if (existingItem) {
-        //povećanje količine ako proizvod već postoji u korpi
+        //povećanje količine ako proizvod već postoji u korpi, sa validacijom dostupnosti
+        const newQuantity = (existingItem.quantity || 1) + 1;
+        if (newQuantity > product.availableInStock) {
+          alert(`Cannot add more. Only ${product.availableInStock} items available in stock.`);
+          return prevItems;
+        }
         return prevItems.map(item =>
           item.id === product.id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
+            ? { ...item, quantity: newQuantity }
             : item
         );
       } else {
         //dodavanje novog proizvoda u korpu
+        if (product.availableInStock === 0) {
+          alert('This product is out of stock.');
+          return prevItems;
+        }
         return [...prevItems, { ...product, quantity: 1 }];
       }
     });
@@ -33,9 +42,16 @@ export const CartProvider = ({ children }) => {
       removeFromCart(productId);
     } else {
       setCartItems(prevItems =>
-        prevItems.map(item =>
-          item.id === productId ? { ...item, quantity } : item
-        )
+        prevItems.map(item => {
+          if (item.id === productId) {
+            if (quantity > item.availableInStock) {
+              alert(`Cannot set quantity above ${item.availableInStock}. Only ${item.availableInStock} items available in stock.`);
+              return item;
+            }
+            return { ...item, quantity };
+          }
+          return item;
+        })
       );
     }
   };

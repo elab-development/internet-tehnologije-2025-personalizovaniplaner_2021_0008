@@ -2,6 +2,7 @@
 import React, {useState} from "react";
 import "./slider.css";
 import { Carousel } from "react-bootstrap";
+import { Link } from "react-router-dom";
 import { sliderData } from "../../utils/data";
 
 const Slider = () => {
@@ -24,9 +25,9 @@ const Slider = () => {
                             <p className="mt-3">
                                 {item.title}
                             </p>
-                            <button className="btn primary-btn mt-4">
+                            <Link to={item.link} className="btn primary-btn mt-4">
                                 Shop Now
-                            <i className="bi bi-arrow-right"></i></button>
+                            <i className="bi bi-arrow-right"></i></Link>
                             </Carousel.Caption>
                         </Carousel.Item>
                         );

@@ -8,7 +8,8 @@ const ProductCard = ({ product, onAddToCart }) => {
     ? Math.round(((product.price - product.offerPrice) / product.price) * 100)
     : 0;
 
-    const detailsLink = product.cat === 'Planners' ? `/personal-planner/${product.id}` : `/product/${product.id}`;
+  const slug = `${product.title.toLowerCase().replace(/\s+/g, '-')}-${product.id}`;
+  const detailsLink = product.cat === 'Planners' ? `/personal-planner/${slug}` : `/product/${slug}`;
 
   return (
     <div className="product-card">
@@ -21,6 +22,11 @@ const ProductCard = ({ product, onAddToCart }) => {
             -{discountPercent}%
           </Badge>
         )}
+        {product.availableInStock === 0 && (
+          <Badge className="out-of-stock-badge" bg="secondary">
+            Out of Stock
+          </Badge>
+        )}
       </div>
 
       <div className="product-card-info">
@@ -31,6 +37,8 @@ const ProductCard = ({ product, onAddToCart }) => {
         <Link to={detailsLink} className="product-link-title">
           <h5 className="product-card-title">{product.title}</h5>
         </Link>
+
+        <p className="small-text mb-2">Type: {product.type}</p>
 
         <div className="product-card-price">
           {product.offerPrice ? (

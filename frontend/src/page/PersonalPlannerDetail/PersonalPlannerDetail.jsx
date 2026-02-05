@@ -1,11 +1,11 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Form, Alert, ProgressBar, Card } from 'react-bootstrap';
 import { productData } from '../../utils/data';
 import '../ProductDetail/ProductDetail.css';
 
 const PersonalPlannerDetail = ({ addToCart }) => {
-  const { productId } = useParams();
+  const { productSlug } = useParams();
   const navigate = useNavigate();
 
   const [step, setStep] = useState(1);
@@ -20,18 +20,14 @@ const PersonalPlannerDetail = ({ addToCart }) => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [productId, step]);
+  }, [productSlug, step]);
 
-  const product = productData.find(p => p.id === parseInt(productId, 10));
+  const numericId = parseInt(productSlug.split('-').pop());
+  const product = productData.find(p => p.id === numericId);
 
 
-  const pages = useMemo(() => {
-    return productData.filter(p => p.cat === 'Pages');
-  }, []);
-
-  const stationery = useMemo(() => {
-    return productData.filter(p => p.cat === 'Stationery');
-  }, []);
+  const pages = productData.filter(p => p.cat === 'Pages');
+  const stationery = productData.filter(p => p.cat === 'Stationery');
 
   if (!product) {
     return (
@@ -51,7 +47,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
   const goNext = () => setStep(prev => Math.min(3, prev + 1));
   const goBack = () => setStep(prev => Math.max(1, prev - 1));
 
-  const updatePageQty = (productId, qty) => {
+  const updateSelection = (setList, sourceList, itemId, qty) => {
     const safeQty = Number.isNaN(qty) ? 0 : Math.max(0, qty);
     setSelectedPages(prev => {
       const existing = prev.find(p => p.id === productId);
@@ -67,20 +63,12 @@ const PersonalPlannerDetail = ({ addToCart }) => {
     });
   };
 
+  const updatePageQty = (productId, qty) => {
+    updateSelection(setSelectedPages, pages, productId, qty);
+  };
+
   const updateAddonQty = (productId, qty) => {
-    const safeQty = Number.isNaN(qty) ? 0 : Math.max(0, qty);
-    setSelectedAddons(prev => {
-      const existing = prev.find(a => a.id === productId);
-      if (existing) {
-        return safeQty === 0
-          ? prev.filter(a => a.id !== productId)
-          : prev.map(a => (a.id === productId ? { ...a, qty: safeQty } : a));
-      } else if (safeQty > 0) {
-        const addon = stationery.find(s => s.id === productId);
-        return [...prev, { ...addon, qty: safeQty }];
-      }
-      return prev;
-    });
+    updateSelection(setSelectedAddons, stationery, productId, qty);
   };
 
   const handleAddToCart = () => {
@@ -161,6 +149,8 @@ const PersonalPlannerDetail = ({ addToCart }) => {
               </div>
 
               <h1 className="heading mb-2">{product.title}</h1>
+
+              <p className="small-text mb-3">Type: {product.type}</p>
 
               <div className="price-section mb-4">
                 <span className="current-price">

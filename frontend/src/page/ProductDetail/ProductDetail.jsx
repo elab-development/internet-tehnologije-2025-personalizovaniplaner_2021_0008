@@ -5,7 +5,7 @@ import { productData } from '../../utils/data';
 import './ProductDetail.css';
 
 const ProductDetail = ({ addToCart }) => {
-  const { productId } = useParams();
+  const { productSlug } = useParams();
   const navigate = useNavigate();
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
@@ -13,10 +13,11 @@ const ProductDetail = ({ addToCart }) => {
   //Stranica na vrhu prilikom učitavanja
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [productId]);
+  }, [productSlug]);
 
-  //trazi proizvod po ID-u
-  const product = productData.find(p => p.id === parseInt(productId));
+  //trazi proizvod po IDu
+  const numericId = parseInt(productSlug.split('-').pop());
+  const product = productData.find(p => p.id === numericId);
 
   if (!product) {
     return (
@@ -35,6 +36,9 @@ const ProductDetail = ({ addToCart }) => {
 
   const handleAddToCart = () => {
     if (addToCart) {
+      if (product.availableInStock === 0) {
+        return;
+      }
       for (let i = 0; i < quantity; i++) {
         addToCart(product);
       }
@@ -48,10 +52,6 @@ const ProductDetail = ({ addToCart }) => {
     if (value > 0) setQuantity(value);
   };
 
-  const increaseQuantity = () => setQuantity(prev => prev + 1);
-  const decreaseQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
-
-  const originalPrice = product.price;
   const discountedPrice = product.offerPrice || product.price;
   const discountPercent = product.offerPrice 
     ? Math.round(((product.price - product.offerPrice) / product.price) * 100)
@@ -89,7 +89,7 @@ const ProductDetail = ({ addToCart }) => {
                 {product.offerPrice ? (
                   <>
                     <span className="original-price">
-                      <i className="bi bi-currency-euro"></i>{originalPrice.toFixed(2)}
+                      <i className="bi bi-currency-euro"></i>{product.price.toFixed(2)}
                     </span>
                     <span className="discounted-price ms-2">
                       <i className="bi bi-currency-euro"></i>{discountedPrice.toFixed(2)}
@@ -107,15 +107,35 @@ const ProductDetail = ({ addToCart }) => {
                 <h5 className="sub-heading mb-3">Product Details</h5>
                 <p className="body-text mb-3">
                   {product.description || 'Opis proizvoda nije dostupan.'}
-                  High-quality {product.title.toLowerCase()} perfect for your organization and productivity needs.
-                  Made with premium materials to ensure durability and long-lasting use.
                 </p>
-                <ul className="body-text">
-                  <li>Premium quality materials</li>
-                  <li>Durable and long-lasting</li>
-                  <li>Perfect for personal or professional use</li>
-                  <li>Eco-friendly packaging</li>
-                </ul>
+              </div>
+
+              {/*Detalji proizvoda*/}
+              <div className="specifications-section mb-4">
+                <h5 className="sub-heading mb-3">Specifications</h5>
+                <div className="bg-light p-3 rounded">
+                  {product.availableInStock !== undefined && (
+                    <div className="mb-2">
+                      <span className="body-text fw-bold">Availability:</span>
+                      <span className={`body-text ms-2 ${product.availableInStock > 0 ? 'text-success' : 'text-danger'}`}>
+                        {product.availableInStock > 0 ? '✓ In Stock' : '✗ Out of Stock'}
+                      </span>
+                    </div>
+                  )}
+                  {product.color && (
+                    <div className="mb-2">
+                      <span className="body-text fw-bold">Color:</span>
+                      <span className="body-text ms-2">{product.color}</span>
+                    </div>
+                  )}
+                  {product.material && (
+                    <div className="mb-2">
+                      <span className="body-text fw-bold">Material:</span>
+                      <span className="body-text ms-2">{product.material}</span>
+                    </div>
+                  )}
+                
+                </div>
               </div>
 
               {/* Quantity Selector */}
@@ -124,8 +144,9 @@ const ProductDetail = ({ addToCart }) => {
                 <div className="quantity-controls">
                   <Button 
                     variant="outline-secondary" 
-                    onClick={decreaseQuantity}
+                    onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                     className="qty-btn"
+                    disabled={product.availableInStock === 0}
                   >
                     <i className="bi bi-dash"></i>
                   </Button>
@@ -135,11 +156,13 @@ const ProductDetail = ({ addToCart }) => {
                     onChange={handleQuantityChange}
                     min="1"
                     className="qty-input"
+                    disabled={product.availableInStock === 0}
                   />
                   <Button 
                     variant="outline-secondary" 
-                    onClick={increaseQuantity}
+                    onClick={() => setQuantity(prev => prev + 1)}
                     className="qty-btn"
+                    disabled={product.availableInStock === 0}
                   >
                     <i className="bi bi-plus"></i>
                   </Button>
@@ -153,13 +176,14 @@ const ProductDetail = ({ addToCart }) => {
                   size="lg"
                   onClick={handleAddToCart}
                   className="add-to-cart-btn w-100 mb-2"
+                  disabled={product.availableInStock === 0}
                 >
-                  <i className="bi bi-cart-plus"></i> Add to Cart
+                  <i className="bi bi-cart-plus"></i> {product.availableInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
                 </Button>
                 <Button 
                   variant="outline-dark" 
                   size="lg"
-                  onClick={() => navigate('/')}
+                  onClick={() => navigate('/shop')}
                   className="w-100"
                 >
                   Continue Shopping

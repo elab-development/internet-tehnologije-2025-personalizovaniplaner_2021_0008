@@ -4,6 +4,7 @@ import Footer from './components/Footer/Footer';
 import { Route, Routes } from 'react-router-dom';
 import Home from './page/Home/Home';
 import About from './page/About/About';
+import Shop from './page/Shop/Shop';
 import { AuthProvider } from "./auth/AuthContext";
 import Profile from './page/Profile/Profile';
 import AuthPage from './components/Auth/AuthPage';
@@ -24,9 +25,12 @@ function AppContent() {
         <Header />
         <Routes>
           <Route path='/' element={<Home />}/>
+          <Route path='/shop' element={<Shop />}/>
+          <Route path='/shop/:category' element={<Shop />}/>
+          <Route path='/shop/:category/:type' element={<Shop />}/>
           <Route path='/about' element={<About />}/>
-          <Route path='/product/:productId' element={<ProductDetail addToCart={addToCart} />}/>
-          <Route path='/personal-planner/:productId' element={<PersonalPlannerDetail addToCart={addToCart} />}/>
+          <Route path='/product/:productSlug' element={<ProductDetail addToCart={addToCart} />}/>
+          <Route path='/personal-planner/:productSlug' element={<PersonalPlannerDetail addToCart={addToCart} />}/>
           <Route path='/login' element={<AuthPage />}/>
           <Route path='/profile' element={<ProtectedRoute><Profile/></ProtectedRoute>} />
           <Route path='/admin' element={<ProtectedRoute role="admin"><AdminPanel/></ProtectedRoute>} />
