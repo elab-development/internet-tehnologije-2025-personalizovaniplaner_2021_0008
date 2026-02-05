@@ -1,10 +1,12 @@
 // product images
-import product1 from "../assets/products/notebook-01.png";
-import product2 from "../assets/products/notebook-02.png";
+import product1 from "../assets/products/weekly.jpg";
+import product2 from "../assets/products/monthly.jpg";
 import product3 from "../assets/products/marker-01.png";
 import product4 from "../assets/products/pen-01.png";
 import product5 from "../assets/products/highlighter-01.png";
-import product6 from "../assets/products/planner-01.png";
+import product6 from "../assets/products/sage green planner.jpg";
+import product7 from "../assets/products/cherry red planner.jpg";
+import product8 from "../assets/products/fitness.jpg";
 
 // category images
 import cat1 from "../assets/categories/planner.png";
@@ -33,21 +35,24 @@ import logo from "../assets/logo/logo_build_a_planner.png";
 export const sliderData = [
   {
     id: 0,
-    heading: "Valentine's Day Collection",
-    title: "Make it special with our exclusive stationery",
+    heading: "Valentine's Day",
+    title: "Surprise your loved ones with our exclusive stationery",
     image: slider1,
+    link: "/shop",
   },
   {
     id: 1,
     heading: "Planer Sale - Up to 30% Off",
     title: "Get organized with our stylish planners",
     image: slider2,
+    link: "/shop/planners",
   },
   {
     id: 2,
     heading: "Additions for Your Stationery Set",
     title: "Make planning more fun with our accessories",
     image: slider3,
+    link: "/shop/stationery",
   }
 ];
 
@@ -143,7 +148,7 @@ export const productData = [
   {
     id: 5,
     title: "Personal Planner - Sage Green (Silver Binder)",
-    type:"A5 planner",
+    type:"Small Planners",
     description: "A5 personalized yearly planner with silver binder and sage green cover.",
     price: 34,
     offerPrice: null,
@@ -155,7 +160,39 @@ export const productData = [
     lining: "fabric",
     pockets: 3,
     image: product6,
-  }
+  },
+
+  {
+    id: 6,
+    title: "Personal Planner - Cherry red (Gold Binder)",
+    type:"Small Planners",
+    description: "A4 personalized yearly planner with gold binder and cherry red cover.",
+    price: 35,
+    offerPrice: null,
+    cat: "Planners",
+    availableInStock: 29,
+    color: "Cherry Red",
+    material: "PU leather",
+    metalColor: "gold",
+    lining: "fabric",
+    pockets: 2,
+    image: product7,
+  },
+
+  {
+    id: 8,
+    title: "Fitness tracker",
+    type: "Trackers",
+    description: "Fitness tracker to monitor your daily activities.",
+    price: 1.8,
+    offerPrice: null,
+    cat: "Pages",
+    availableInStock: 0,
+    color: "white",
+    material: "paper",
+    image: product8,
+  },
+  
 ];
 
 export const featureData = [
