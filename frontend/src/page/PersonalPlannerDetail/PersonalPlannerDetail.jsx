@@ -49,15 +49,15 @@ const PersonalPlannerDetail = ({ addToCart }) => {
 
   const updateSelection = (setList, sourceList, itemId, qty) => {
     const safeQty = Number.isNaN(qty) ? 0 : Math.max(0, qty);
-    setSelectedPages(prev => {
-      const existing = prev.find(p => p.id === productId);
+    setList(prev => {
+      const existing = prev.find(p => p.id === itemId);
       if (existing) {
         return safeQty === 0
-          ? prev.filter(p => p.id !== productId)
-          : prev.map(p => (p.id === productId ? { ...p, qty: safeQty } : p));
+          ? prev.filter(p => p.id !== itemId)
+          : prev.map(p => (p.id === itemId ? { ...p, qty: safeQty } : p));
       } else if (safeQty > 0) {
-        const product = pages.find(p => p.id === productId);
-        return [...prev, { ...product, qty: safeQty }];
+        const product = sourceList.find(p => p.id === itemId);
+        return product ? [...prev, { ...product, qty: safeQty }] : prev;
       }
       return prev;
     });
