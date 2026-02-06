@@ -58,6 +58,7 @@ const Cart = ({ show, setCartBox }) => {
                       <div className="d-inline-block">
                         <CartQuantityControl 
                           quantity={item.quantity || 1}
+                          maxQuantity={item.availableInStock || Infinity}
                           onQuantityChange={(newQty) => updateQuantity(item.id, newQty)}
                         />
                       </div>

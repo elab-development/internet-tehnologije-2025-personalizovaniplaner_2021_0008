@@ -26,8 +26,8 @@ const PersonalPlannerDetail = ({ addToCart }) => {
   const product = productData.find(p => p.id === numericId);
 
 
-  const pages = productData.filter(p => p.cat === 'Pages');
-  const stationery = productData.filter(p => p.cat === 'Stationery');
+  const pages = productData.filter(p => p.cat === 'Pages' && p.availableInStock > 0);
+  const stationery = productData.filter(p => p.cat === 'Stationery' && p.availableInStock > 0);
 
   if (!product) {
     return (

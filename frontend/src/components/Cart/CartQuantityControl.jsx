@@ -1,9 +1,9 @@
 import React from 'react'
 import { Button, FormControl, InputGroup } from 'react-bootstrap'
 
-export const CartQuantityControl = ({ quantity = 1, onQuantityChange }) => {
+export const CartQuantityControl = ({ quantity = 1, maxQuantity = Infinity, onQuantityChange }) => {
     const handleIncrease = () => {
-        if (onQuantityChange) onQuantityChange(quantity + 1);
+        if (quantity < maxQuantity && onQuantityChange) onQuantityChange(quantity + 1);
     }
 
     const handleDecrease = () => {
@@ -22,7 +22,12 @@ export const CartQuantityControl = ({ quantity = 1, onQuantityChange }) => {
                 className='text-center'
                 style={{width:'2.5rem', border:'2px solid #f8f9fa'}}
             />
-            <Button size='sm' variant='light' onClick={handleIncrease}>
+            <Button 
+                size='sm' 
+                variant='light' 
+                onClick={handleIncrease}
+                disabled={quantity >= maxQuantity}
+            >
                 <i className='bi bi-plus-lg'></i>
             </Button>
         </InputGroup>
