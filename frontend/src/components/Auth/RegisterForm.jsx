@@ -18,7 +18,7 @@ function RegisterForm() {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     if (!emailRegex.test(email)) {
-      return alert("Please enter a valid email");
+      return alert("The email entered is not valid.");
     }
 
     
@@ -29,11 +29,11 @@ function RegisterForm() {
 
 
     const existingUser = usersData.find(
-      (u) => u.username === username || u.email === email
+      (u) => u.email === email
     );
 
     if (existingUser){
-      return alert ('Username or email already exists.')
+      return alert ('Email already exists in system.')
     }
     
 
