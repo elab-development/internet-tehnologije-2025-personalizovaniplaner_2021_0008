@@ -1,0 +1,260 @@
+.orders-table-container {
+  overflow-x: auto;
+  background-color: var(--clr-light-gray);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+
+.order-details-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-details-popup::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+
+.popup-content {
+  position: relative;
+  background: var(--clr-gradient-purple);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  max-height: 80vh;
+  overflow-y: auto;
+  color: var(--clr-text);
+  width: 90%;
+  max-width: 450px;
+  z-index: 1;
+}
+
+
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--clr-light);
+  transition: color 0.2s ease-in-out;
+}
+
+.popup-close:hover {
+  color: var(--clr-primary);
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: var(--fs-body);
+  color: var(--clr-heading);
+}
+
+
+.popup-content .total {
+  text-align: right;
+  font-size: 1.05rem;
+}
+
+@media (max-width: 576px) {
+  .popup-content {
+    padding: 20px;
+    max-width: 95%;
+  }
+
+  .order-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+
+  .popup-close {
+    font-size: 20px;
+  }
+}
+
+
+.orders-table-container {
+  overflow-x: auto;
+  background-color: var(--clr-light-gray);
+  padding: 1rem;
+  border-radius: 8px;
+}
+
+.orders-table-container tbody tr:hover {
+  background-color: #f4effb;
+}
+
+.orders-table-container .btn-info {
+  background: #b6a3e6;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+}
+
+.orders-table-container .btn-info:hover {
+  background: #cbbaf0;
+  color: #3a2c5c;
+}
+
+.orders-table-container select.form-select {
+  background-color: #f2ecfb;
+  border: 1px solid #cbbaf0;
+  color: #4a3b6e;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.orders-table-container select.form-select:focus {
+  border-color: #a98edb;
+  box-shadow: 0 0 0 0.15rem rgba(169, 142, 219, 0.35);
+}
+
+.badge.bg-success {
+  background-color: #a8e6c1 !important;
+  color: #1f5133;
+}
+
+.badge.bg-info {
+  background-color: #b6e6f2 !important;
+  color: #124b5a;
+}
+
+.badge.bg-warning {
+  background-color: #fde6a7 !important;
+  color: #6a5200;
+}
+
+.badge.bg-danger {
+  background-color: #f6b0b0 !important;
+  color: #6b1a1a;
+}
+
+.order-details-popup {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.order-details-popup::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+}
+
+.popup-content {
+  position: relative;
+  background: var(--clr-gradient-purple);
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  max-height: 80vh;
+  overflow-y: auto;
+  color: var(--clr-text);
+  width: 90%;
+  max-width: 450px;
+  z-index: 1;
+}
+
+.popup-close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--clr-light);
+  transition: color 0.2s ease-in-out;
+}
+
+.popup-close:hover {
+  color: var(--clr-primary);
+}
+
+.order-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  font-size: var(--fs-body);
+  color: var(--clr-heading);
+}
+
+.popup-content .total {
+  text-align: right;
+  font-size: 1.05rem;
+}
+
+.btn-success {
+  background: #9ed9b3;
+  border: none;
+  color: #1f5133;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-success:hover {
+  background: #bfead0;
+  color: #1f5133;
+}
+
+.btn-primary {
+  background: #a98edb;
+  border: none;
+  color: #fff;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-primary:hover {
+  background: #c3aee8;
+  color: #3a2c5c;
+}
+
+.btn-danger {
+  background: #f2a3a3;
+  border: none;
+  color: #6b1a1a;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-danger:hover {
+  background: #f6bcbc;
+  color: #6b1a1a;
+}
+
+.btn-secondary {
+  background: #d6d1e8;
+  border: none;
+  color: #3a2c5c;
+  font-weight: 500;
+  transition: all 0.25s ease-in-out;
+}
+
+.btn-secondary:hover {
+  background: #e6e1f3;
+  color: #3a2c5c;
+}
+
+.btn {
+  border-radius: 6px;
+}
+

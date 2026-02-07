@@ -3,10 +3,12 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Form, Alert, ProgressBar, Card } from 'react-bootstrap';
 import { productData } from '../../utils/data';
 import '../ProductDetail/ProductDetail.css';
+import { useAuth } from '../../auth/AuthContext';
 
 const PersonalPlannerDetail = ({ addToCart }) => {
   const { productSlug } = useParams();
   const navigate = useNavigate();
+  const {user} = useAuth();
 
   const [step, setStep] = useState(1);
   const [personalization, setPersonalization] = useState({
@@ -361,7 +363,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                   >
                     Back
                   </Button>
-                  {step < 3 ? (
+                  {step < 3 && user?.role !== 'admin' ? (
                     <Button
                       variant="dark"
                       onClick={goNext}
@@ -369,7 +371,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                     >
                       Next
                     </Button>
-                  ) : (
+                  ) : user?.role !== 'admin' ? (
                     <Button
                       variant="dark"
                       onClick={handleAddToCart}
@@ -377,7 +379,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                     >
                       Add Planner to Cart
                     </Button>
-                  )}
+                  ): null }
                 </div>
               </div>
 

@@ -3,6 +3,7 @@ import { useNavigate, Navigate } from "react-router-dom";
 import { useState } from "react";
 import { productData } from "../../utils/data";
 import { Table, Modal, Form, Button, Badge, Tab, Tabs } from "react-bootstrap";
+import OrdersTable from "../../components/Orders/OrdersTable";
 import "../Admin/admin.css";
 
 const EMPTY_FORM = {
@@ -22,8 +23,6 @@ function AdminPanel() {
   const [activeTab, setActiveTab] = useState("products");
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [showOrderModal, setShowOrderModal] = useState(false);
-  const [selectedOrder, setSelectedOrder] = useState(null);
   const [orders, setOrders] = useState([
     {
       id: 1001, customerName: "Ana Petrović", date: "2026-02-01", status: "Shipped", total: 37.90,
@@ -55,9 +54,6 @@ function AdminPanel() {
   const handleFormChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
   const handleSaveProduct = () => alert(editingProduct ? "Backend: PATCH /api/products/:id" : "Backend: POST /api/products");
   const handleDeleteProduct = (id) => window.confirm("Delete product?") && alert("Backend: DELETE /api/products/:id");
-  const handleStatusChange = () => alert("Backend: PATCH /api/orders/:id/status");
-  const handleViewOrderDetails = (order) => { setSelectedOrder(order); setShowOrderModal(true); };
-  const handleCloseOrderModal = () => { setShowOrderModal(false); setSelectedOrder(null); };
 
   return (
     <div className="admin-container">
@@ -144,54 +140,11 @@ function AdminPanel() {
         {/*Kartica porudžbine*/}
         <Tab eventKey="orders" title="Orders">
           <div className="admin-section">
-            <h3>Order Management</h3>
-            <div className="admin-table-container">
-              <Table striped bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th>Order ID</th>
-                    <th>Customer</th>
-                    <th>Date</th>
-                    <th>Status</th>
-                    <th>Total</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {orders.map((order) => (
-                    <tr key={order.id}>
-                      <td>#{order.id}</td>
-                      <td>{order.customerName}</td>
-                      <td>{order.date}</td>
-                      <td>
-                        <Form.Select
-                          value={order.status}
-                          onChange={(e) =>
-                            handleStatusChange(order.id, e.target.value)
-                          }
-                          size="sm"
-                        >
-                          <option>Pending</option>
-                          <option>Shipped</option>
-                          <option>Delivered</option>
-                          <option>Cancelled</option>
-                        </Form.Select>
-                      </td>
-                      <td>€{order.total.toFixed(2)}</td>
-                      <td>
-                        <Button 
-                          variant="info" 
-                          size="sm"
-                          onClick={() => handleViewOrderDetails(order)}
-                        >
-                          View Details
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </div>
+            <OrdersTable 
+              orders={orders} 
+              isAdmin={true} 
+              onStatusChange={(id, status) => alert("Backend: PATCH /api/orders/:id/status")}
+            />
           </div>
         </Tab>
       </Tabs>
@@ -269,35 +222,6 @@ function AdminPanel() {
           <Button variant="primary" onClick={handleSaveProduct}>
             {editingProduct ? "Update Product" : "Add Product"} {/*proizvod se izmeni ili doda*/}
           </Button>
-        </Modal.Footer>
-      </Modal>
-
-      {/*Modal za prikaz detalja selektovane porudžbine*/}
-      <Modal show={showOrderModal} onHide={handleCloseOrderModal}>
-        <Modal.Header closeButton>
-          <Modal.Title>Order #{selectedOrder?.id}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          {selectedOrder && (
-            <>
-              <p><strong>Customer:</strong> {selectedOrder.customerName}</p>
-              <p><strong>Date:</strong> {selectedOrder.date}</p>
-              <p><strong>Status:</strong> <Badge>{selectedOrder.status}</Badge></p>
-              <hr />
-              <h6>Items:</h6>
-              {selectedOrder.items.map((item, i) => (
-                <div key={i} className="d-flex justify-content-between mb-2">
-                  <span>#{item.productId} - {item.productName} (x{item.qty})</span>
-                  <span>€{(item.qty * item.price).toFixed(2)}</span>
-                </div>
-              ))}
-              <hr />
-              <h5 className="text-end">Total: €{selectedOrder.total.toFixed(2)}</h5>
-            </>
-          )}
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleCloseOrderModal}>Close</Button>
         </Modal.Footer>
       </Modal>
     </div>

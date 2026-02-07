@@ -173,6 +173,7 @@ const ProductDetail = ({ addToCart }) => {
 
               {/* Dugmad */}
               <div className="action-buttons mb-4">
+                {user?.role !== 'admin' && (
                 <Button 
                   variant="dark" 
                   size="lg"
@@ -182,6 +183,7 @@ const ProductDetail = ({ addToCart }) => {
                 >
                   <i className="bi bi-cart-plus"></i> {product.availableInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
                 </Button>
+                )}
                 <Button 
                   variant="outline-dark" 
                   size="lg"
