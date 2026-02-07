@@ -73,7 +73,7 @@ const Checkout = () => {
               </Form.Select>
             </Form.Group>
 
-            <Button variant="primary" type="submit">
+            <Button variant="primary" type="submit" onClick={() => alert('There was an error placing the order')}>
               CONFIRM YOUR ORDER
             </Button>
           </Form>

@@ -52,8 +52,8 @@ function AdminPanel() {
   };
 
   const handleFormChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleSaveProduct = () => alert(editingProduct ? "Backend: PATCH /api/products/:id" : "Backend: POST /api/products");
-  const handleDeleteProduct = (id) => window.confirm("Delete product?") && alert("Backend: DELETE /api/products/:id");
+  const handleSaveProduct = () => alert(editingProduct ? "There was an error in editing the product. Try again later." : "There was an error in adding the product. Try again later.");
+  const handleDeleteProduct = (id) => window.confirm("Delete product?") && alert("There was an error in deleting the product. Try again later.");
 
   return (
     <div className="admin-container">
@@ -143,7 +143,7 @@ function AdminPanel() {
             <OrdersTable 
               orders={orders} 
               isAdmin={true} 
-              onStatusChange={(id, status) => alert("Backend: PATCH /api/orders/:id/status")}
+              onStatusChange={(id, status) => alert("There was an error in editing the status of the order. Try again later.")}
             />
           </div>
         </Tab>

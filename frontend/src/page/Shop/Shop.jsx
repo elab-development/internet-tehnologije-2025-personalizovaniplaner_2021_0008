@@ -242,7 +242,7 @@ const Shop = () => {
                 ) : (
                   <Col xs={12}>
                     <div className="text-center py-5">
-                      <p className="body-text">No products found matching your filters.</p>
+                      <p className="body-text">No products found matching the filters.</p>
                     </div>
                   </Col>
                 )}

@@ -26,7 +26,7 @@ const ProductDetail = ({ addToCart }) => {
       <section className="py-5">
         <Container>
           <div className="text-center">
-            <h2 className="heading mb-4">Product Not Found</h2>
+            <h2 className="heading mb-4">Product details are not available.</h2>
             <Button variant="dark" onClick={() => navigate('/')}>
               Back to Home
             </Button>
@@ -108,7 +108,7 @@ const ProductDetail = ({ addToCart }) => {
               <div className="description-section mb-4">
                 <h5 className="sub-heading mb-3">Product Details</h5>
                 <p className="body-text mb-3">
-                  {product.description || 'Opis proizvoda nije dostupan.'}
+                  {product.description || 'The product description is unavailable.'}
                 </p>
               </div>
 
@@ -206,14 +206,14 @@ const ProductDetail = ({ addToCart }) => {
                   <i className="bi bi-truck"></i>
                   <div>
                     <h6 className="sub-heading mb-0">Free Shipping</h6>
-                    <p className="body-text mb-0">On orders over €30</p>
+                    <p className="body-text mb-0">On orders over €40</p>
                   </div>
                 </div>
                 <div className="info-item">
                   <i className="bi bi-arrow-counterclockwise"></i>
                   <div>
                     <h6 className="sub-heading mb-0">Easy Returns</h6>
-                    <p className="body-text mb-0">30-day return policy</p>
+                    <p className="body-text mb-0">14-day return policy</p>
                   </div>
                 </div>
               </div>

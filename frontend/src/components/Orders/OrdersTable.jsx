@@ -15,20 +15,23 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
   return (
     <div className="orders-section">
       <h3>Orders</h3>
-      <div className="orders-table-container">
-        <Table striped bordered hover responsive>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              {isAdmin && <th>Customer</th>}
-              <th>Date</th>
-              <th>Status</th>
-              <th>Total</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
+      {orders.length === 0 ? (
+        <p className="text-center py-4">There are no orders</p>
+      ) : (
+        <div className="orders-table-container">
+          <Table striped bordered hover responsive>
+            <thead>
+              <tr>
+                <th>Order ID</th>
+                {isAdmin && <th>Customer</th>}
+                <th>Date</th>
+                <th>Status</th>
+                <th>Total</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {orders.map((order) => (
               <tr key={order.id}>
                 <td>#{order.id}</td>
                 {isAdmin && <td>{order.customerName}</td>}
@@ -66,6 +69,7 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
           </tbody>
         </Table>
       </div>
+      )}
 
       {/*detalji porudžbine*/}
       {selectedOrder && (
