@@ -1,9 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Button } from 'react-bootstrap';
+import { useAuth } from '../../auth/AuthContext'
 import './ProductCard.css';
 
 const ProductCard = ({ product, onAddToCart }) => {
+  const { user } = useAuth();
   const discountPercent = product.offerPrice 
     ? Math.round(((product.price - product.offerPrice) / product.price) * 100)
     : 0;
@@ -61,7 +63,8 @@ const ProductCard = ({ product, onAddToCart }) => {
           <Link to={detailsLink} className="btn-view-details">
             View Details
           </Link>
-          <Button 
+          {user?.role !== 'admin' && (
+            <Button 
             variant="dark" 
             size="sm"
             className="btn-add-cart"
@@ -69,6 +72,7 @@ const ProductCard = ({ product, onAddToCart }) => {
           >
             <i className="bi bi-cart-plus"></i>
           </Button>
+          )}
         </div>
       </div>
     </div>

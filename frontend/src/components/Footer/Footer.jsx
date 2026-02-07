@@ -1,6 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { paymentIcons, siteLogo } from "../../utils/data";
+import { Link } from "react-router-dom";
 import "./footer.css";
 
 const Footer = () => {
@@ -16,7 +17,13 @@ const Footer = () => {
           <Col md={4} className="footer-section text-center">
             <div className="footer-links">
               <a href="/about" className="footer-nav-link">ABOUT</a>
-              <a href="/home" className="footer-nav-link">HOME</a>
+             <Link 
+                to="/" 
+                className="footer-nav-link" 
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              >
+                HOME
+              </Link>
               <a href="/shop" className="footer-nav-link">SHOP</a>
             </div>
           </Col>

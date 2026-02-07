@@ -108,7 +108,8 @@ const Header = () => {
                 </ListGroup.Item>
 
                 {/*Ikonica za korpu sa brojem koji se menja */}
-                <ListGroup.Item className='border-0' onClick={() => setCartBox(true)}>
+                {user?.role !== 'admin' &&(
+                  <ListGroup.Item className='border-0' onClick={() => setCartBox(true)}>
                   <span className='d-flex align-items-center'>
                     <span className='position-relative'>
                       <i className="bi bi-bag-heart"></i>
@@ -120,7 +121,7 @@ const Header = () => {
                     <span className='ms-2 d-none d-sm-block body-text'>Cart</span>
                   </span>
                 </ListGroup.Item>
-
+                )}
                 <ListGroup.Item className='border-0 d-block d-lg-none'>
                   <i
                     className='bi bi-list h4'

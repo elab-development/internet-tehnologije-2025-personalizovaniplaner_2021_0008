@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Form } from 'react-bootstrap';
 import { productData } from '../../utils/data';
+import { useAuth } from '../../auth/AuthContext'
 import './ProductDetail.css';
 
 const ProductDetail = ({ addToCart }) => {
   const { productSlug } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
 
