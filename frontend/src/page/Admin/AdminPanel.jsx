@@ -23,6 +23,10 @@ function AdminPanel() {
   const [activeTab, setActiveTab] = useState("products");
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const [productMessage, setProductMessage] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [productToDelete, setProductToDelete] = useState(null);
+  const [deleteMessage, setDeleteMessage] = useState(null);
   const [orders, setOrders] = useState([
     {
       id: 1001, customerName: "Ana Petrović", date: "2026-02-01", status: "Shipped", total: 37.90,
@@ -52,8 +56,42 @@ function AdminPanel() {
   };
 
   const handleFormChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleSaveProduct = () => alert(editingProduct ? "There was an error in editing the product. Try again later." : "There was an error in adding the product. Try again later.");
-  const handleDeleteProduct = (id) => window.confirm("Delete product?") && alert("There was an error in deleting the product. Try again later.");
+  const handleSaveProduct = () => {
+  if (editingProduct) {
+    // Ako se edituje postojeći proizvod
+    setProducts(prevProducts =>
+      prevProducts.map(product =>
+        product.id === editingProduct.id
+          ? { ...editingProduct, ...formData }
+          : product
+      )
+    );
+    setProductMessage("✏️ Product updated successfully!");
+  } else {
+    // Ako se dodaje novi proizvod
+    const newProduct = {
+      ...formData,
+      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
+    };
+    setProducts(prevProducts => [...prevProducts, newProduct]);
+    setProductMessage("✅ Product added successfully!");
+  }
+  setTimeout(() => setProductMessage(null), 4000);
+  handleCloseModal();
+};
+
+  const handleDeleteProduct = (id) => {
+  setProductToDelete(id);
+  setShowDeleteModal(true);
+};
+
+const confirmDeleteProduct = () => {
+  setProducts(prevProducts => prevProducts.filter(product => product.id !== productToDelete));
+  setDeleteMessage("🗑️ Product deleted successfully!");
+  setTimeout(() => setDeleteMessage(null), 4000);
+  setShowDeleteModal(false);
+  setProductToDelete(null);
+};
 
   return (
     <div className="admin-container">
@@ -83,7 +121,16 @@ function AdminPanel() {
                 + Add Product
               </Button>
             </div>
-
+            {productMessage && (
+              <div className="alert alert-success rounded-3 shadow-sm mb-3">
+                {productMessage}
+              </div>
+            )}
+            {deleteMessage && (
+              <div className="alert alert-danger rounded-3 shadow-sm mb-3">
+                {deleteMessage}
+              </div>
+            )}
             <div className="admin-table-container">
               <Table striped bordered hover responsive>
                 <thead>
@@ -224,6 +271,23 @@ function AdminPanel() {
           </Button>
         </Modal.Footer>
       </Modal>
+      {/* Modal za potvrdu brisanja proizvoda */}
+      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Delete</Modal.Title>
+        </Modal.Header>
+      <Modal.Body>
+        Are you sure you want to delete this product?
+      </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={confirmDeleteProduct}>
+            Delete
+          </Button>
+        </Modal.Footer>
+    </Modal>
     </div>
   );
 }
