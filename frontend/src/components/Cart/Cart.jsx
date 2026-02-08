@@ -13,6 +13,25 @@ const Cart = ({ show, setCartBox }) => {
   const freeDeliveryThreshold = 40;
   const showFreeDeliveryAlert = totalPrice >= freeDeliveryThreshold;
 
+  // Calculate max quantity for an item accounting for all instances of the same product
+  const getMaxQuantity = (item) => {
+    const productId = item.productId || item.id;
+    
+    // Calculate total quantity of this product across all cart items
+    const totalQuantityOfProduct = cartItems.reduce((total, cartItem) => {
+      const itemProductId = cartItem.productId || cartItem.id;
+      if (itemProductId === productId) {
+        return total + (cartItem.quantity || 1);
+      }
+      return total;
+    }, 0);
+
+    // Return remaining stock: total available minus what's in cart (excluding current item)
+    const currentItemQty = item.quantity || 1;
+    const remainingStock = item.availableInStock - (totalQuantityOfProduct - currentItemQty);
+    return Math.max(1, remainingStock);
+  };
+
   return (
     <>
       <Offcanvas show={show} onHide={handleClose}
@@ -49,6 +68,9 @@ const Cart = ({ show, setCartBox }) => {
                   </div>
                   <div className="w-100 ps-3">
                     <h6 className="sub-heading mb-2">{item.title}</h6>
+                    {item.personalisation && (
+                      <p className="small text-muted mb-1">{item.personalisation}</p>
+                    )}
                     <div className="sub-heading pb-1 mb-2">
                       <i className="bi bi-currency-euro"></i>
                       {(item.offerPrice || item.price).toFixed(2)}
@@ -58,7 +80,7 @@ const Cart = ({ show, setCartBox }) => {
                       <div className="d-inline-block">
                         <CartQuantityControl 
                           quantity={item.quantity || 1}
-                          maxQuantity={item.availableInStock || Infinity}
+                          maxQuantity={getMaxQuantity(item)}
                           onQuantityChange={(newQty) => updateQuantity(item.id, newQty)}
                         />
                       </div>

@@ -2,13 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Form } from 'react-bootstrap';
 import { productData } from '../../utils/data';
-import { useAuth } from '../../auth/AuthContext'
+import { useAuth } from '../../auth/AuthContext';
+import { useCart } from '../../contexts/CartContext';
 import './ProductDetail.css';
 
 const ProductDetail = ({ addToCart }) => {
   const { productSlug } = useParams();
   const navigate = useNavigate();
   const { user } = useAuth();
+  const { cartItems } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
 
@@ -36,12 +38,23 @@ const ProductDetail = ({ addToCart }) => {
     );
   }
 
+  // Calculate quantity already in cart (count all instances using productId)
+  const quantityInCart = cartItems.reduce((total, item) => {
+    const itemProductId = item.productId || item.id;
+    if (itemProductId === product.id) {
+      return total + (item.quantity || 1);
+    }
+    return total;
+  }, 0);
+  const remainingStock = product.availableInStock - quantityInCart;
+
   const handleAddToCart = () => {
     if (addToCart) {
-      if (product.availableInStock === 0) {
+      if (remainingStock <= 0) {
         return;
       }
-      for (let i = 0; i < quantity; i++) {
+      const qtyToAdd = Math.min(quantity, remainingStock);
+      for (let i = 0; i < qtyToAdd; i++) {
         addToCart(product);
       }
       setAddedToCart(true);
@@ -51,7 +64,11 @@ const ProductDetail = ({ addToCart }) => {
 
   const handleQuantityChange = (e) => {
     const value = parseInt(e.target.value);
-    if (value > 0) setQuantity(value);
+    if (value > 0 && value <= remainingStock) {
+      setQuantity(value);
+    } else if (value > remainingStock) {
+      setQuantity(remainingStock);
+    }
   };
 
   const discountedPrice = product.offerPrice || product.price;
@@ -119,8 +136,8 @@ const ProductDetail = ({ addToCart }) => {
                   {product.availableInStock !== undefined && (
                     <div className="mb-2">
                       <span className="body-text fw-bold">Availability:</span>
-                      <span className={`body-text ms-2 ${product.availableInStock > 0 ? 'text-success' : 'text-danger'}`}>
-                        {product.availableInStock > 0 ? '✓ In Stock' : '✗ Out of Stock'}
+                      <span className={`body-text ms-2 ${remainingStock > 0 ? 'text-success' : 'text-danger'}`}>
+                        {remainingStock > 0 ? '✓ In Stock' : '✗ Out of Stock'}
                       </span>
                     </div>
                   )}
@@ -148,7 +165,7 @@ const ProductDetail = ({ addToCart }) => {
                     variant="outline-secondary" 
                     onClick={() => setQuantity(prev => Math.max(1, prev - 1))}
                     className="qty-btn"
-                    disabled={product.availableInStock === 0}
+                    disabled={remainingStock === 0}
                   >
                     <i className="bi bi-dash"></i>
                   </Button>
@@ -157,14 +174,15 @@ const ProductDetail = ({ addToCart }) => {
                     value={quantity}
                     onChange={handleQuantityChange}
                     min="1"
+                    max={remainingStock}
                     className="qty-input"
-                    disabled={product.availableInStock === 0}
+                    disabled={remainingStock === 0}
                   />
                   <Button 
                     variant="outline-secondary" 
-                    onClick={() => setQuantity(prev => prev + 1)}
+                    onClick={() => setQuantity(prev => Math.min(remainingStock, prev + 1))}
                     className="qty-btn"
-                    disabled={product.availableInStock === 0}
+                    disabled={remainingStock === 0 || quantity >= remainingStock}
                   >
                     <i className="bi bi-plus"></i>
                   </Button>
@@ -179,9 +197,9 @@ const ProductDetail = ({ addToCart }) => {
                   size="lg"
                   onClick={handleAddToCart}
                   className="add-to-cart-btn w-100 mb-2"
-                  disabled={product.availableInStock === 0}
+                  disabled={remainingStock === 0}
                 >
-                  <i className="bi bi-cart-plus"></i> {product.availableInStock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                  <i className="bi bi-cart-plus"></i> {remainingStock === 0 ? 'Out of Stock' : 'Add to Cart'}
                 </Button>
                 )}
                 <Button 

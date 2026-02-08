@@ -4,11 +4,13 @@ import { Container, Row, Col, Button, Badge, Form, Alert, ProgressBar, Card } fr
 import { productData } from '../../utils/data';
 import '../ProductDetail/ProductDetail.css';
 import { useAuth } from '../../auth/AuthContext';
+import { useCart } from '../../contexts/CartContext';
 
 const PersonalPlannerDetail = ({ addToCart }) => {
   const { productSlug } = useParams();
   const navigate = useNavigate();
   const {user} = useAuth();
+  const { cartItems } = useCart();
 
   const [step, setStep] = useState(1);
   const [personalization, setPersonalization] = useState({
@@ -27,30 +29,32 @@ const PersonalPlannerDetail = ({ addToCart }) => {
   const numericId = parseInt(productSlug.split('-').pop());
   const product = productData.find(p => p.id === numericId);
 
-
-  const pages = productData.filter(p => p.cat === 'Pages' && p.availableInStock > 0);
-  const stationery = productData.filter(p => p.cat === 'Stationery' && p.availableInStock > 0);
-
-  if (!product) {
-    return (
-      <section className="py-5">
-        <Container>
-          <div className="text-center">
-            <h2 className="heading mb-4">Product Not Found</h2>
-            <Button variant="dark" onClick={() => navigate('/')}>
-              Back to Home
-            </Button>
-          </div>
-        </Container>
-      </section>
-    );
-  }
-
   const goNext = () => setStep(prev => Math.min(3, prev + 1));
   const goBack = () => setStep(prev => Math.max(1, prev - 1));
 
+  const getRemainingStock = (productId) => {
+    const product = productData.find(p => p.id === productId);
+    if (!product) return 0;
+    
+    // Count all instances of this product in cart (using productId)
+    const quantityInCart = cartItems.reduce((total, item) => {
+      const itemProductId = item.productId || item.id;
+      if (itemProductId === productId) {
+        return total + (item.quantity || 1);
+      }
+      return total;
+    }, 0);
+    
+    return product.availableInStock - quantityInCart;
+  };
+
+  const pages = productData.filter(p => p.cat === 'Pages' && getRemainingStock(p.id) > 0);
+  const stationery = productData.filter(p => p.cat === 'Stationery' && getRemainingStock(p.id) > 0);
+
   const updateSelection = (setList, sourceList, itemId, qty) => {
-    const safeQty = Number.isNaN(qty) ? 0 : Math.max(0, qty);
+    const remainingStock = getRemainingStock(itemId);
+    const safeQty = Number.isNaN(qty) ? 0 : Math.max(0, Math.min(qty, remainingStock));
+    
     setList(prev => {
       const existing = prev.find(p => p.id === itemId);
       if (existing) {
@@ -76,35 +80,34 @@ const PersonalPlannerDetail = ({ addToCart }) => {
   const handleAddToCart = () => {
     if (!addToCart) return;
 
+    // Format personalization as a string for OrderItem.personalisation field
+    const personalizationString = `Text: ${personalization.text}, Font: ${personalization.font}, Color: ${personalization.color}`;
 
     const plannerItem = {
       ...product,
-      id: `planner-${product.id}-${Date.now()}`,
+      cartItemId: `planner-${product.id}-${Date.now()}`, // Unique cart identifier
+      productId: product.id, // Keep original product ID for stock tracking
       title: `${product.title} (Personalized)`,
-      personalization,
+      personalisation: personalizationString, // Store as string per model
     };
     addToCart(plannerItem);
 
     selectedPages.forEach(p => {
       const pageItem = {
         ...p,
-        id: `pages-${p.id}-${Date.now()}`,
+        id: p.id,
         quantity: p.qty,
       };
-      for (let i = 0; i < p.qty; i++) {
-        addToCart(pageItem);
-      }
+      addToCart(pageItem);
     });
-
 
     selectedAddons.forEach(a => {
       const addonItem = {
         ...a,
-        id: `addon-${a.id}-${Date.now()}`,
+        id: a.id,
+        quantity: a.qty,
       };
-      for (let i = 0; i < a.qty; i++) {
-        addToCart(addonItem);
-      }
+      addToCart(addonItem);
     });
 
     const hasPages = selectedPages.length > 0;
@@ -120,6 +123,8 @@ const PersonalPlannerDetail = ({ addToCart }) => {
       setMessage('Planner added to cart');
     }
 
+    setSelectedPages([]);
+    setSelectedAddons([]);
     setTimeout(() => navigate('/'), 2000);
   };
 
@@ -250,6 +255,8 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                     <Row className="g-3">
                       {pages.map(p => {
                         const selectedQty = selectedPages.find(sp => sp.id === p.id)?.qty || 0;
+                        const remainingStock = getRemainingStock(p.id);
+                        
                         return (
                           <Col xs={12} sm={6} key={p.id}>
                             <Card className={`h-100 ${selectedQty > 0 ? 'border-dark border-2' : ''}`}>
@@ -262,6 +269,11 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                                 <Card.Title className="sub-heading">{p.title}</Card.Title>
                                 <Card.Text className="body-text mb-3">
                                   €{p.price.toFixed(2)}
+                                  {remainingStock < p.availableInStock && (
+                                    <div className="text-muted small mt-1">
+                                      ({remainingStock} available)
+                                    </div>
+                                  )}
                                 </Card.Text>
                                 <div className="mt-auto d-flex align-items-center gap-2">
                                   <Button
@@ -274,6 +286,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                                   <Form.Control
                                     type="number"
                                     min="0"
+                                    max={remainingStock}
                                     value={selectedQty}
                                     onChange={(e) => updatePageQty(p.id, parseInt(e.target.value, 10))}
                                     style={{ maxWidth: '60px', textAlign: 'center' }}
@@ -282,6 +295,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                                     variant="outline-secondary"
                                     size="sm"
                                     onClick={() => updatePageQty(p.id, selectedQty + 1)}
+                                    disabled={remainingStock === 0 || selectedQty >= remainingStock}
                                   >
                                     <i className="bi bi-plus"></i>
                                   </Button>
@@ -305,6 +319,8 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                     <Row className="g-3">
                       {stationery.map(a => {
                         const selectedQty = selectedAddons.find(sa => sa.id === a.id)?.qty || 0;
+                        const remainingStock = getRemainingStock(a.id);
+                        
                         return (
                           <Col xs={12} sm={6} key={a.id}>
                             <Card className={`h-100 ${selectedQty > 0 ? 'border-dark border-2' : ''}`}>
@@ -317,6 +333,11 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                                 <Card.Title className="sub-heading">{a.title}</Card.Title>
                                 <Card.Text className="body-text mb-3">
                                   €{a.price.toFixed(2)}
+                                  {remainingStock < a.availableInStock && (
+                                    <div className="text-muted small mt-1">
+                                      ({remainingStock} available)
+                                    </div>
+                                  )}
                                 </Card.Text>
                                 <div className="mt-auto d-flex align-items-center gap-2">
                                   <Button
@@ -329,6 +350,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                                   <Form.Control
                                     type="number"
                                     min="0"
+                                    max={remainingStock}
                                     value={selectedQty}
                                     onChange={(e) => updateAddonQty(a.id, parseInt(e.target.value, 10))}
                                     style={{ maxWidth: '60px', textAlign: 'center' }}
@@ -337,6 +359,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                                     variant="outline-secondary"
                                     size="sm"
                                     onClick={() => updateAddonQty(a.id, selectedQty + 1)}
+                                    disabled={remainingStock === 0 || selectedQty >= remainingStock}
                                   >
                                     <i className="bi bi-plus"></i>
                                   </Button>
@@ -367,9 +390,10 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                     <Button
                       variant="dark"
                       onClick={goNext}
+                      disabled={step === 1 && product.availableInStock === 0}
                       className="w-100"
                     >
-                      Next
+                      {step === 1 && product.availableInStock === 0 ? 'Out of Stock' : 'Next'}
                     </Button>
                   ) : user?.role !== 'admin' ? (
                     <Button

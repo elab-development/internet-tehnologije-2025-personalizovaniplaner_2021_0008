@@ -2,13 +2,27 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Badge, Button } from 'react-bootstrap';
 import { useAuth } from '../../auth/AuthContext'
+import { useCart } from '../../contexts/CartContext';
 import './ProductCard.css';
 
 const ProductCard = ({ product, onAddToCart }) => {
   const { user } = useAuth();
+  const { cartItems } = useCart();
+  
   const discountPercent = product.offerPrice 
     ? Math.round(((product.price - product.offerPrice) / product.price) * 100)
     : 0;
+
+  // Count total quantity of this product in cart (handles both regular items and planner instances)
+  const quantityInCart = cartItems.reduce((total, item) => {
+    const itemProductId = item.productId || item.id;
+    if (itemProductId === product.id) {
+      return total + (item.quantity || 1);
+    }
+    return total;
+  }, 0);
+
+  const isOutOfStock = product.availableInStock === 0 || quantityInCart >= product.availableInStock;
 
   const slug = `${product.title.toLowerCase().replace(/\s+/g, '-')}-${product.id}`;
   const detailsLink = product.cat === 'Planners' ? `/personal-planner/${slug}` : `/product/${slug}`;
@@ -24,7 +38,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             -{discountPercent}%
           </Badge>
         )}
-        {product.availableInStock === 0 && (
+        {isOutOfStock && (
           <Badge className="out-of-stock-badge" bg="secondary">
             Out of Stock
           </Badge>
@@ -69,6 +83,7 @@ const ProductCard = ({ product, onAddToCart }) => {
             size="sm"
             className="btn-add-cart"
             onClick={() => onAddToCart(product)}
+            disabled={isOutOfStock}
           >
             <i className="bi bi-cart-plus"></i>
           </Button>

@@ -2,8 +2,10 @@ import { useState } from "react";
 import { Table, Form, Button, Badge } from "react-bootstrap";
 import "./OrdersTable.css";
 
-function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
+function OrdersTable({ orders, isAdmin = false, onStatusChange, users = [] }) {
   const [selectedOrder, setSelectedOrder] = useState(null);
+
+  const getUserInfo = (userId) => users.find(u => u.id === userId);
 
   const getStatusColor = (status) => {
     if (status === "Delivered") return "success";
@@ -23,7 +25,7 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
             <thead>
               <tr>
                 <th>Order ID</th>
-                {isAdmin && <th>Customer</th>}
+                {isAdmin && <th>User</th>}
                 <th>Date</th>
                 <th>Status</th>
                 <th>Total</th>
@@ -34,8 +36,15 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
               {orders.map((order) => (
               <tr key={order.id}>
                 <td>#{order.id}</td>
-                {isAdmin && <td>{order.customerName}</td>}
-                <td>{order.date}</td>
+                {isAdmin && (
+                  <td>
+                    {getUserInfo(order.userId)?.name || `User #${order.userId}`}
+                    {getUserInfo(order.userId)?.address && (
+                      <div className="text-muted small">{getUserInfo(order.userId).address}</div>
+                    )}
+                  </td>
+                )}
+                <td>{order.dateCreated}</td>
                 <td>
                   {isAdmin ? (
                     <Form.Select
@@ -54,7 +63,7 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
                     </Badge>
                   )}
                 </td>
-                <td>€{order.total.toFixed(2)}</td>
+                <td>€{order.totalAmount.toFixed(2)}</td>
                 <td>
                   <Button
                     variant="info"
@@ -83,26 +92,34 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange }) {
             </button>
             <h5>Order #{selectedOrder.id}</h5>
             <p>
-              <strong>Date:</strong> {selectedOrder.date}
+              <strong>Date Created:</strong> {selectedOrder.dateCreated}
             </p>
+            {selectedOrder.dateSent && (
+              <p>
+                <strong>Date Sent:</strong> {selectedOrder.dateSent}
+              </p>
+            )}
             <p>
               <strong>Status:</strong> {selectedOrder.status}
             </p>
             <hr />
             <p>
-              <strong>Items:</strong>
+              <strong>Order Items:</strong>
             </p>
-            {selectedOrder.items.map((item, i) => (
-              <div key={i} className="order-item">
+            {selectedOrder.orderItems.map((item) => (
+              <div key={item.number} className="order-item">
                 <span>
-                  #{item.productId} - {item.productName} (x{item.qty})
+                  {item.number}. {item.productTitle} (x{item.quantity})
+                  {item.personalisation && (
+                    <div className="text-muted small">{item.personalisation}</div>
+                  )}
                 </span>
-                <span>€{(item.qty * item.price).toFixed(2)}</span>
+                <span>€{item.amount.toFixed(2)}</span>
               </div>
             ))}
             <hr />
             <p className="total">
-              <strong>Total: €{selectedOrder.total.toFixed(2)}</strong>
+              <strong>Total: €{selectedOrder.totalAmount.toFixed(2)}</strong>
             </p>
           </div>
         </div>

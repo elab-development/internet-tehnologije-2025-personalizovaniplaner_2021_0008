@@ -4,9 +4,21 @@ import { productData } from "../../utils/data";
 import OrdersTable from "../../components/Orders/OrdersTable";
 import "../Admin/admin.css";
 
-const getProduct = (id) => {
-  const p = productData.find(prod => prod.id === id);
-  return { productId: id, productName: p?.title, qty: 1, price: p?.offerPrice || p?.price };
+const getOrderItem = (number, productId, quantity = 1, personalisation = null) => {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return null;
+  
+  const price = product.offerPrice || product.price;
+  return {
+    number,
+    productId,
+    quantity,
+    amount: price * quantity,
+    personalisation,
+    // Additional fields for display purposes (not in model)
+    productTitle: product.title,
+    unitPrice: price
+  };
 };
 
 function Profile() {
@@ -17,19 +29,28 @@ function Profile() {
   const userOrders = [
     {
       id: 2001,
-      customerName: user.username,
-      date: "2026-01-15",
+      userId: user?.id || 201,
+      dateCreated: "2026-01-15",
+      dateSent: "2026-01-18",
       status: "Delivered",
-      total: 67.80,
-      items: [getProduct(5), getProduct(0)]
+      totalAmount: 67.80,
+      orderItems: [
+        getOrderItem(1, 5, 1),
+        getOrderItem(2, 0, 1)
+      ]
     },
     {
       id: 2002,
-      customerName: user.username,
-      date: "2026-02-05",
+      userId: user?.id || 201,
+      dateCreated: "2026-02-05",
+      dateSent: null,
       status: "Shipped",
-      total: 42.30,
-      items: [getProduct(3), getProduct(4), getProduct(1)]
+      totalAmount: 42.30,
+      orderItems: [
+        getOrderItem(1, 3, 1, "Text: My Planner, Font: Serif, Color: #000000"),
+        getOrderItem(2, 4, 1),
+        getOrderItem(3, 1, 1)
+      ]
     }
   ];
 

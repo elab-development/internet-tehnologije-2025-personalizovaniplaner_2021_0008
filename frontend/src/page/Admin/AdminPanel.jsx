@@ -11,9 +11,21 @@ const EMPTY_FORM = {
   availableInStock: "", color: "", material: "", metalColor: "", lining: "", pockets: ""
 };
 
-const getProduct = (id) => {
-  const p = productData.find(prod => prod.id === id);
-  return { productId: id, productName: p?.title, qty: 1, price: p?.offerPrice || p?.price };
+const getOrderItem = (number, productId, quantity = 1, personalisation = null) => {
+  const product = productData.find(p => p.id === productId);
+  if (!product) return null;
+  
+  const price = product.offerPrice || product.price;
+  return {
+    number,
+    productId,
+    quantity,
+    amount: price * quantity,
+    personalisation,
+    // Additional fields for display purposes (not in model)
+    productTitle: product.title,
+    unitPrice: price
+  };
 };
 
 function AdminPanel() {
@@ -25,14 +37,35 @@ function AdminPanel() {
   const [editingProduct, setEditingProduct] = useState(null);
   const [orders, setOrders] = useState([
     {
-      id: 1001, customerName: "Ana Petrović", date: "2026-02-01", status: "Shipped", total: 37.90,
-      items: [getProduct(5), getProduct(0)]
+      id: 1001,
+      userId: 101,
+      dateCreated: "2026-02-01",
+      dateSent: "2026-02-03",
+      status: "Shipped",
+      totalAmount: 37.90,
+      orderItems: [
+        getOrderItem(1, 5, 1),
+        getOrderItem(2, 0, 1)
+      ]
     },
     {
-      id: 1002, customerName: "Marko Tomić", date: "2026-02-03", status: "Pending", total: 38.90,
-      items: [getProduct(6), getProduct(1), { ...getProduct(3), qty: 2 }]
+      id: 1002,
+      userId: 102,
+      dateCreated: "2026-02-03",
+      dateSent: null,
+      status: "Pending",
+      totalAmount: 67.80,
+      orderItems: [
+        getOrderItem(1, 6, 1, "Text: Work Journal, Font: Sans-serif, Color: #1a1a1a"),
+        getOrderItem(2, 1, 1),
+        getOrderItem(3, 3, 2)
+      ]
     }
   ]);
+  const users = [
+    { id: 101, name: "Ana Petrović", address: "Knez Mihailova 12, Beograd" },
+    { id: 102, name: "Marko Tomić", address: "Bulevar Oslobođenja 45, Novi Sad" }
+  ];
   const [formData, setFormData] = useState(EMPTY_FORM);
 
   if (!user || user.role !== "admin") {
@@ -144,7 +177,7 @@ function AdminPanel() {
               orders={orders} 
               isAdmin={true} 
               onStatusChange={(id, status) => alert("There was an error in editing the status of the order. Try again later.")}
-            />
+                users={users} />
           </div>
         </Tab>
       </Tabs>
