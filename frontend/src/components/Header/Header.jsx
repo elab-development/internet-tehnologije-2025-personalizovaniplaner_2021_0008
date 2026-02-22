@@ -183,7 +183,7 @@ const Header = () => {
 
                     <Nav className="justify-content-start flex-grow-1 pe-3">
                       {/*Home u meniju*/}
-                      <Nav.Link as={Link} to="/">Home</Nav.Link>
+                      <Nav.Link as={Link} to="/" onClick={() => setShowNavBar(false)}>Home</Nav.Link>
                       {/*Shop u meniju*/}
                       <NavDropdown
                         className='dropdown-fullwidth'
@@ -196,34 +196,34 @@ const Header = () => {
                       >
                         <Row>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/shop/planners" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop/planners" className="dropdown-item primary-text sub-heading mb-1" onClick={() => setShowNavBar(false)}>
                               Personalized Planners
                             </Link>
-                            <Link to="/shop/planners/largeplanners" className='dropdown-item'>Large Planners (A4)</Link>
-                            <Link to="/shop/planners/smallplanners" className='dropdown-item'>Small Planners (A5)</Link>
+                            <Link to="/shop/planners/largeplanners" className='dropdown-item' onClick={() => setShowNavBar(false)}>Large Planners (A4)</Link>
+                            <Link to="/shop/planners/smallplanners" className='dropdown-item' onClick={() => setShowNavBar(false)}>Small Planners (A5)</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/shop/pages" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop/pages" className="dropdown-item primary-text sub-heading mb-1" onClick={() => setShowNavBar(false)}>
                               Planner Pages
                             </Link>
-                            <Link to="/shop/pages/daily" className='dropdown-item'>Daily pages</Link>
-                            <Link to="/shop/pages/weekly" className='dropdown-item'>Weekly pages</Link>
-                            <Link to="/shop/pages/monthly" className='dropdown-item'>Monthly pages</Link>
-                            <Link to="/shop/pages/trackers" className='dropdown-item'>Trackers</Link>
+                            <Link to="/shop/pages/daily" className='dropdown-item' onClick={() => setShowNavBar(false)}>Daily pages</Link>
+                            <Link to="/shop/pages/weekly" className='dropdown-item' onClick={() => setShowNavBar(false)}>Weekly pages</Link>
+                            <Link to="/shop/pages/monthly" className='dropdown-item' onClick={() => setShowNavBar(false)}>Monthly pages</Link>
+                            <Link to="/shop/pages/trackers" className='dropdown-item' onClick={() => setShowNavBar(false)}>Trackers</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/shop/stationery" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop/stationery" className="dropdown-item primary-text sub-heading mb-1" onClick={() => setShowNavBar(false)}>
                               Stationery
                             </Link>
-                            <Link to="/shop/stationery/separators" className='dropdown-item'>Planner separators</Link>
-                            <Link to="/shop/stationery/stickers" className='dropdown-item'>Stickers</Link>
-                            <Link to="/shop/stationery/writingtool" className='dropdown-item'>Writing tools</Link>
+                            <Link to="/shop/stationery/separators" className='dropdown-item' onClick={() => setShowNavBar(false)}>Planner separators</Link>
+                            <Link to="/shop/stationery/stickers" className='dropdown-item' onClick={() => setShowNavBar(false)}>Stickers</Link>
+                            <Link to="/shop/stationery/writingtool" className='dropdown-item' onClick={() => setShowNavBar(false)}>Writing tools</Link>
                           </Col>
                           <Col lg={3} xs={12} xl={3} className="mb-2 mb-lg-0 border-end last-col">
-                            <Link to="/shop" className="dropdown-item primary-text sub-heading mb-1">
+                            <Link to="/shop" className="dropdown-item primary-text sub-heading mb-1" onClick={() => setShowNavBar(false)}>
                               All Products
                             </Link>
-                        <Link to="/shop" className='dropdown-item'>
+                        <Link to="/shop" className='dropdown-item' onClick={() => setShowNavBar(false)}>
                           View Shop
                         </Link>
                       </Col>
@@ -231,7 +231,7 @@ const Header = () => {
 
                   </NavDropdown>
                   {/*About u meniju*/}
-                  <Nav.Link as={Link} to="/about">About Us</Nav.Link>
+                  <Nav.Link as={Link} to="/about" onClick={() => setShowNavBar(false)}>About Us</Nav.Link>
                 </Nav>
               </Offcanvas.Body>
             </Navbar.Offcanvas>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button } from 'react-bootstrap';
 import ProductCard from '../../components/ProductCard/ProductCard';
-import { productData } from '../../utils/data';
+import { useProducts } from '../../contexts/ProductsContext';
 import { useCart } from '../../contexts/CartContext';
 import { useSearch } from '../../contexts/SearchContext';
 import './shop.css';
@@ -12,6 +12,7 @@ const Shop = () => {
   const navigate = useNavigate();
   const { addToCart } = useCart();
   const { query } = useSearch();
+  const { products, loading } = useProducts();
 
   //Stanje filtera koje se postavlja na osnovu URL parametara i korisničkih interakcija
   const [filters, setFilters] = useState({
@@ -89,13 +90,13 @@ const Shop = () => {
   };
 
   //filtriranje proizvoda na osnovu aktivnih filtera
-  const filteredProducts = productData.filter((product) => {
-    if (filters.category && product.cat.toLowerCase() !== filters.category) {
+  const filteredProducts = products.filter((product) => {
+    if (filters.category && (product.cat || '').toLowerCase() !== filters.category) {
       return false;
     }
 
     if (filters.type) {
-      const productType = product.type.toLowerCase().replace(/\s+/g, '');
+      const productType = (product.type || '').toLowerCase().replace(/\s+/g, '');
       if (!productType.includes(filters.type)) {
         return false;
       }
@@ -106,7 +107,9 @@ const Shop = () => {
     }
 
     if (filters.material) {
-      const materialMatch = product.material.toLowerCase().includes(filters.material.toLowerCase());
+      const materialMatch = (product.material || '')
+        .toLowerCase()
+        .includes(filters.material.toLowerCase());
       if (!materialMatch) {
         return false;
       }
@@ -114,9 +117,9 @@ const Shop = () => {
 
     if (query) {
       const searchLower = query.toLowerCase();
-      const titleMatch = product.title.toLowerCase().includes(searchLower);
-      const descriptionMatch = product.description.toLowerCase().includes(searchLower);
-      const typeMatch = product.type.toLowerCase().includes(searchLower);
+      const titleMatch = (product.title || '').toLowerCase().includes(searchLower);
+      const descriptionMatch = (product.description || '').toLowerCase().includes(searchLower);
+      const typeMatch = (product.type || '').toLowerCase().includes(searchLower);
       if (!titleMatch && !descriptionMatch && !typeMatch) {
         return false;
       }

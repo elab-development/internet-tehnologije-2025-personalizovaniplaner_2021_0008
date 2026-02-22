@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Form, Alert, ProgressBar, Card } from 'react-bootstrap';
-import { productData } from '../../utils/data';
+import { useProducts } from '../../contexts/ProductsContext';
 import '../ProductDetail/ProductDetail.css';
 import { useAuth } from '../../auth/AuthContext';
 import { useCart } from '../../contexts/CartContext';
@@ -11,6 +11,7 @@ const PersonalPlannerDetail = ({ addToCart }) => {
   const navigate = useNavigate();
   const {user} = useAuth();
   const { cartItems } = useCart();
+  const { products, loading } = useProducts();
 
   const [step, setStep] = useState(1);
   const [personalization, setPersonalization] = useState({
@@ -27,13 +28,40 @@ const PersonalPlannerDetail = ({ addToCart }) => {
   }, [productSlug, step]);
 
   const numericId = parseInt(productSlug.split('-').pop());
-  const product = productData.find(p => p.id === numericId);
+  const product = products.find(p => p.id === numericId);
+
+  if (loading) {
+    return (
+      <section className="py-5">
+        <Container>
+          <div className="text-center">
+            <h2 className="heading mb-4">Loading product details...</h2>
+          </div>
+        </Container>
+      </section>
+    );
+  }
+
+  if (!product) {
+    return (
+      <section className="py-5">
+        <Container>
+          <div className="text-center">
+            <h2 className="heading mb-4">Product details are not available.</h2>
+            <Button variant="dark" onClick={() => navigate('/')}>
+              Back to Home
+            </Button>
+          </div>
+        </Container>
+      </section>
+    );
+  }
 
   const goNext = () => setStep(prev => Math.min(3, prev + 1));
   const goBack = () => setStep(prev => Math.max(1, prev - 1));
 
   const getRemainingStock = (productId) => {
-    const product = productData.find(p => p.id === productId);
+    const product = products.find(p => p.id === productId);
     if (!product) return 0;
     
     // Count all instances of this product in cart (using productId)
@@ -48,8 +76,8 @@ const PersonalPlannerDetail = ({ addToCart }) => {
     return product.availableInStock - quantityInCart;
   };
 
-  const pages = productData.filter(p => p.cat === 'Pages' && getRemainingStock(p.id) > 0);
-  const stationery = productData.filter(p => p.cat === 'Stationery' && getRemainingStock(p.id) > 0);
+  const pages = products.filter(p => p.cat === 'Pages' && getRemainingStock(p.id) > 0);
+  const stationery = products.filter(p => p.cat === 'Stationery' && getRemainingStock(p.id) > 0);
 
   const updateSelection = (setList, sourceList, itemId, qty) => {
     const remainingStock = getRemainingStock(itemId);
@@ -219,10 +247,10 @@ const PersonalPlannerDetail = ({ addToCart }) => {
                         <span className="body-text ms-2">{product.color}</span>
                       </div>
                     )}
-                    {product.matherial && (
+                    {product.material && (
                       <div className="mb-2">
                         <span className="body-text fw-bold">Material:</span>
-                        <span className="body-text ms-2">{product.matherial}</span>
+                        <span className="body-text ms-2">{product.material}</span>
                       </div>
                     )}
                     {product.metalColor && (

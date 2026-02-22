@@ -18,6 +18,7 @@ class Proizvod extends Model
         'dostupnaKolicina',
         'bojaProizvoda',
         'materijalProizvoda',
+        'slika',
     ];
 
     public function planer()

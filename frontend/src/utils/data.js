@@ -1,12 +1,4 @@
-// product images
-import product1 from "../assets/products/weekly.jpg";
-import product2 from "../assets/products/monthly.jpg";
-import product3 from "../assets/products/marker-01.png";
-import product4 from "../assets/products/pen-01.png";
-import product5 from "../assets/products/highlighter-01.png";
-import product6 from "../assets/products/sage green planner.jpg";
-import product7 from "../assets/products/cherry red planner.jpg";
-import product8 from "../assets/products/fitness.jpg";
+
 
 // category images
 import cat1 from "../assets/categories/planner.png";
@@ -77,6 +69,8 @@ export const categoriesData = [
   }
 ];
 
+// proizvodi se sada vuku sa backend-a
+/*
 export const productData = [
   {
     id: 0,
@@ -194,6 +188,8 @@ export const productData = [
   },
   
 ];
+*/
+export const productData = [];
 
 export const featureData = [
   {
@@ -223,30 +219,7 @@ export const featureData = [
   }
 ];
 
-/**Fake users base for testing */
-export const usersData = [
-  {
-    id: 1,
-    username: "admin",
-    email: "admin@test.com",
-    password: "admin123",
-    role: "admin",
-  },
-  {
-    id: 2,
-    username: "user",
-    email: "user@test.com",
-    password: "user123",
-    role: "user",
-  },
-  {
-    id: 3,
-    username: "tester",
-    email: "tester@test.com",
-    password: "Tester123!",
-    role: "user",
-  },
-];
+
 
 export const paymentIcons = [
   { id: 0, title: "Visa", image: visaIcon },

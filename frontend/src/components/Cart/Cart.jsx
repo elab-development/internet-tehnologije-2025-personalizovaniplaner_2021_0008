@@ -101,7 +101,7 @@ const Cart = ({ show, setCartBox }) => {
                   <span className="sub-heading">€{totalPrice.toFixed(2)}</span>
                 </div>
             
-                <Link to="/checkout" className="btn btn-dark w-100 checkout-btn">
+                <Link to="/checkout" className="btn btn-dark w-100 checkout-btn" onClick={handleClose}>
                   Proceed to Checkout
                 </Link>
               </div>

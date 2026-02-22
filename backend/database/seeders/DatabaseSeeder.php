@@ -73,6 +73,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 120,
             'bojaProizvoda' => 'White',
             'materijalProizvoda' => 'Recycled paper',
+            'slika' => 'products/weekly.jpg',
         ]);
 
         Proizvod::create([
@@ -85,6 +86,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 100,
             'bojaProizvoda' => 'White',
             'materijalProizvoda' => 'Recycled paper',
+            'slika' => 'products/monthly.jpg',
         ]);
 
         Proizvod::create([
@@ -97,6 +99,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 80,
             'bojaProizvoda' => 'Black',
             'materijalProizvoda' => 'plastic',
+            'slika' => 'products/marker-01.png',
         ]);
 
         Proizvod::create([
@@ -109,6 +112,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 30,
             'bojaProizvoda' => 'Red',
             'materijalProizvoda' => 'plastic',
+            'slika' => 'products/pen-01.png',
         ]);
 
         Proizvod::create([
@@ -121,6 +125,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 40,
             'bojaProizvoda' => 'Yellow',
             'materijalProizvoda' => 'plastic',
+            'slika' => 'products/highlighter-01.png',
         ]);
 
         Proizvod::create([
@@ -133,6 +138,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 25,
             'bojaProizvoda' => 'Sage Green',
             'materijalProizvoda' => 'PU leather',
+            'slika' => 'products/sage-green-planner.jpg',
         ]);
 
         Proizvod::create([
@@ -145,6 +151,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 29,
             'bojaProizvoda' => 'Cherry Red',
             'materijalProizvoda' => 'PU leather',
+            'slika' => 'products/cherry-red-planner.jpg',
         ]);
 
         Proizvod::create([
@@ -157,6 +164,7 @@ class DatabaseSeeder extends Seeder
             'dostupnaKolicina' => 0,
             'bojaProizvoda' => 'white',
             'materijalProizvoda' => 'paper',
+            'slika' => 'products/fitness.jpg',
         ]);
 
         Planer::create([

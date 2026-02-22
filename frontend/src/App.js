@@ -15,6 +15,7 @@ import AdminPanel from './page/Admin/AdminPanel';
 import PersonalPlannerDetail from './page/PersonalPlannerDetail/PersonalPlannerDetail';
 import { SearchProvider } from './contexts/SearchContext';
 import Checkout from './page/Checkout/Checkout';  
+import { ProductsProvider } from './contexts/ProductsContext';
 
 function AppContent() {
   const { addToCart } = useCart();
@@ -45,9 +46,11 @@ function AppContent() {
 function App() {
   return (
     <CartProvider>
-      <SearchProvider>
-        <AppContent />
-      </SearchProvider>
+      <ProductsProvider>
+        <SearchProvider>
+          <AppContent />
+        </SearchProvider>
+      </ProductsProvider>
     </CartProvider>
   );
 }

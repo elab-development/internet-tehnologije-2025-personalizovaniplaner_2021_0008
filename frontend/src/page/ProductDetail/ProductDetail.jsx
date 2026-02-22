@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Button, Badge, Form } from 'react-bootstrap';
-import { productData } from '../../utils/data';
+import { useProducts } from '../../contexts/ProductsContext';
 import { useAuth } from '../../auth/AuthContext';
 import { useCart } from '../../contexts/CartContext';
 import './ProductDetail.css';
@@ -11,6 +11,7 @@ const ProductDetail = ({ addToCart }) => {
   const navigate = useNavigate();
   const { user } = useAuth();
   const { cartItems } = useCart();
+  const { products, loading } = useProducts();
   const [quantity, setQuantity] = useState(1);
   const [addedToCart, setAddedToCart] = useState(false);
 
@@ -21,7 +22,19 @@ const ProductDetail = ({ addToCart }) => {
 
   //trazi proizvod po IDu
   const numericId = parseInt(productSlug.split('-').pop());
-  const product = productData.find(p => p.id === numericId);
+  const product = products.find(p => p.id === numericId);
+
+  if (loading) {
+    return (
+      <section className="py-5">
+        <Container>
+          <div className="text-center">
+            <h2 className="heading mb-4">Loading product details...</h2>
+          </div>
+        </Container>
+      </section>
+    );
+  }
 
   if (!product) {
     return (
@@ -38,7 +51,7 @@ const ProductDetail = ({ addToCart }) => {
     );
   }
 
-  // Calculate quantity already in cart (count all instances using productId)
+  //Calculate quantity already in cart (count all instances using productId)
   const quantityInCart = cartItems.reduce((total, item) => {
     const itemProductId = item.productId || item.id;
     if (itemProductId === product.id) {

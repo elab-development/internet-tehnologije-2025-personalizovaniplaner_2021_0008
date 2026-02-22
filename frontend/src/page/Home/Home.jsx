@@ -2,18 +2,20 @@ import React from 'react';
 import Slider from '../../components/Slider/Slider';
 import ProductCard from '../../components/ProductCard/ProductCard';
 import { Col, Container, Row } from 'react-bootstrap';
-import { featureData, productData } from '../../utils/data';
+import { featureData } from '../../utils/data';
 import { useCart } from '../../contexts/CartContext';
 import './Home.css';
 import Categories from '../../components/Categories/Categories';
 import { useSearch } from '../../contexts/SearchContext';  
+import { useProducts } from '../../contexts/ProductsContext';
 
 const Home = () => {
   const { addToCart } = useCart();
   const { query } = useSearch();   
+  const { products, loading } = useProducts();
 
   // filtriranje proizvoda
-  const filteredProducts = productData.filter(product =>
+  const filteredProducts = products.filter(product =>
   product.title.toLowerCase().includes(query.toLowerCase()) ||
   product.cat.toLowerCase().includes(query.toLowerCase())
 );
@@ -64,9 +66,11 @@ const Home = () => {
             </Col>
           </Row>
           <Row>
-            {filteredProducts.length > 0 ? (
-              filteredProducts.map((product, index) => (
-                <Col lg={4} md={6} sm={6} xs={12} key={index} className="mb-4">
+            {loading ? (
+              <p className="text-center">Loading products...</p>
+            ) : filteredProducts.length > 0 ? (
+              filteredProducts.map((product) => (
+                <Col lg={4} md={6} sm={6} xs={12} key={product.id} className="mb-4">
                   <ProductCard product={product} onAddToCart={addToCart} />
                 </Col>
               ))
