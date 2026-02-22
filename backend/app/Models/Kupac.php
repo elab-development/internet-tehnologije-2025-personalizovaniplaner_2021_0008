@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Sanctum\HasApiTokens;
 
 class Kupac extends Model
 {
+    use HasApiTokens;
     protected $table = 'kupci';
+    public $timestamps = false;
 
     protected $fillable = [
         'ime',

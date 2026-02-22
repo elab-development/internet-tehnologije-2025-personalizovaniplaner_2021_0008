@@ -15,7 +15,6 @@ const getOrderItem = (number, productId, quantity = 1, personalisation = null) =
     quantity,
     amount: price * quantity,
     personalisation,
-    // Additional fields for display purposes (not in model)
     productTitle: product.title,
     unitPrice: price
   };
@@ -71,12 +70,12 @@ function Profile() {
 
       <div className="admin-section">
         <div className="info-box">
-          <span><strong>Username:</strong></span>
-          <span>{user.username}</span>
+          <span><strong>Name:</strong></span>
+          <span>{`${user?.ime ?? ""} ${user?.prezime ?? ""}`.trim() || "-"}</span>
         </div>
         <div className="info-box">
           <span><strong>Email:</strong></span>
-          <span>{user.email}</span>
+          <span>{user?.email || "-"}</span>
         </div>
       </div>
 

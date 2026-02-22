@@ -94,9 +94,9 @@ CREATE TABLE IF NOT EXISTS stavke_porudzbine (
 
 
 INSERT INTO kupci (ime, prezime, email, adresa, telefon, lozinka) VALUES
-('Marko', 'Marković', 'marko@test.com', 'Bulevar revolucije 73', '+381641234567', 'lozinka123'),
-('Ana', 'Anić', 'ana@test.com', 'Knez Mihailova 15', '+381641234568', 'lozinka123'),
-('User', 'Testović', 'user@test.com', 'Terazije 34', '+381641234569', 'user123');
+('Marko', 'Marković', 'marko@test.com', 'Bulevar revolucije 73', '061234567', 'lozinka123'),
+('Ana', 'Anić', 'ana@test.com', 'Knez Mihailova 15', '061234568', 'lozinka123'),
+('User', 'Testović', 'user@test.com', 'Terazije 34', '061234569', 'user123');
 
 INSERT INTO administratori (ime, prezime, email, korisnickoIme, lozinka) VALUES
 ('Admin', 'User', 'admin@test.com', 'admin', 'admin123'),

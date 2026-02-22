@@ -116,6 +116,7 @@
 }
 
 .form-side h2 {
+  margin-top: 20px;
   margin-bottom: 20px; /* prostor između naslova i prvog inputa */
 }
 
