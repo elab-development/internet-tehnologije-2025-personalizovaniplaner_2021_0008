@@ -1,5 +1,6 @@
 import React from 'react'
 import './about.css'
+import Quote from '../../components/Quote';
 
 const About = () => {
   return (
@@ -17,6 +18,7 @@ const About = () => {
             manage their tasks, schedules, and personal goals effectively.
           </p>
         </div>
+        <Quote />
       </div>
     </section>
   )
