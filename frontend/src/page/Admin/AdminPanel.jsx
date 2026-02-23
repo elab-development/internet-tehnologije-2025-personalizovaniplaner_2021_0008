@@ -4,6 +4,7 @@ import { useState } from "react";
 import { productData } from "../../utils/data";
 import { Table, Modal, Form, Button, Badge, Tab, Tabs } from "react-bootstrap";
 import OrdersTable from "../../components/Orders/OrdersTable";
+import ExchangeRate from "../../components/ExchangeRate/ExchangeRate";
 import "../Admin/admin.css";
 
 const EMPTY_FORM = {
@@ -228,6 +229,8 @@ const confirmDeleteProduct = () => {
           </div>
         </Tab>
       </Tabs>
+
+      <ExchangeRate />
 
       {/*Modal - Forma za editovanje ili dodavanje proizvoda*/}
       <Modal show={showModal} onHide={handleCloseModal} size="lg">
