@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Table, Form, Button, Badge } from "react-bootstrap";
 import "./OrdersTable.css";
 
-function OrdersTable({ orders, isAdmin = false, onStatusChange, users = [] }) {
+function OrdersTable({ orders, isAdmin = false, onStatusChange, users = [], showEmpty = true }) {
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const getUserInfo = (userId) => users.find(u => u.id === userId);
@@ -14,11 +14,21 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange, users = [] }) {
     return "warning";
   };
 
+  const formatDateTime = (value) => {
+    if (!value) return "-";
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "-";
+
+    return date.toISOString().slice(0, 10);
+  };
+
   return (
     <div className="orders-section">
       <h3>Orders</h3>
       {orders.length === 0 ? (
+        showEmpty ? (
         <p className="text-center py-4">There are no orders</p>
+        ) : null
       ) : (
         <div className="orders-table-container">
           <Table striped bordered hover responsive>
@@ -44,7 +54,7 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange, users = [] }) {
                     )}
                   </td>
                 )}
-                <td>{order.dateCreated}</td>
+                <td>{formatDateTime(order.dateCreated)}</td>
                 <td>
                   {isAdmin ? (
                     <Form.Select
@@ -92,11 +102,11 @@ function OrdersTable({ orders, isAdmin = false, onStatusChange, users = [] }) {
             </button>
             <h5>Order #{selectedOrder.id}</h5>
             <p>
-              <strong>Date Created:</strong> {selectedOrder.dateCreated}
+              <strong>Date Created:</strong> {formatDateTime(selectedOrder.dateCreated)}
             </p>
             {selectedOrder.dateSent && (
               <p>
-                <strong>Date Sent:</strong> {selectedOrder.dateSent}
+                <strong>Date Sent:</strong> {formatDateTime(selectedOrder.dateSent)}
               </p>
             )}
             <p>

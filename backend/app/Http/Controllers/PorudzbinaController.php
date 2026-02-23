@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Administrator;
 use App\Models\Porudzbina;
 use App\Models\StavkaPorudzbine;
 use App\Models\Proizvod;
@@ -19,10 +20,16 @@ class PorudzbinaController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $porudzbine = Porudzbina::where('kupacId', $user->id)
-            ->with('stavkePorudzbine.proizvod')
-            ->orderBy('created_at', 'desc')
-            ->get();
+        if ($user instanceof Administrator) {
+            $porudzbine = Porudzbina::with(['stavkePorudzbine.proizvod', 'kupac'])
+                ->orderBy('created_at', 'desc')
+                ->get();
+        } else {
+            $porudzbine = Porudzbina::where('kupacId', $user->id)
+                ->with('stavkePorudzbine.proizvod')
+                ->orderBy('created_at', 'desc')
+                ->get();
+        }
 
         return response()->json($porudzbine);
     }
@@ -100,7 +107,27 @@ class PorudzbinaController extends Controller
     
     public function update(Request $request, Porudzbina $porudzbina)
     {
-        //
+        $user = Auth::guard('sanctum')->user();
+
+        if (!$user) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        if (!($user instanceof Administrator)) {
+            return response()->json(['message' => 'Forbidden'], 403);
+        }
+
+        $validated = $request->validate([
+            'status' => 'required|string',
+        ]);
+
+        $porudzbina->status = $validated['status'];
+        $porudzbina->save();
+
+        return response()->json([
+            'message' => 'Order updated successfully',
+            'porudzbina' => $porudzbina->load('stavkePorudzbine.proizvod', 'kupac'),
+        ]);
     }
 
     

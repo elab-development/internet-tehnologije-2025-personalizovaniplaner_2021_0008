@@ -1,7 +1,6 @@
 import { useAuth } from "../../auth/AuthContext";
 import { useNavigate, Navigate } from "react-router-dom";
-import { useState } from "react";
-import { productData } from "../../utils/data";
+import { useEffect, useState } from "react";
 import { Table, Modal, Form, Button, Badge, Tab, Tabs } from "react-bootstrap";
 import OrdersTable from "../../components/Orders/OrdersTable";
 import ExchangeRate from "../../components/ExchangeRate/ExchangeRate";
@@ -12,66 +11,156 @@ const EMPTY_FORM = {
   availableInStock: "", color: "", material: "", metalColor: "", lining: "", pockets: ""
 };
 
-const getOrderItem = (number, productId, quantity = 1, personalisation = null) => {
-  const product = productData.find(p => p.id === productId);
-  if (!product) return null;
-  
-  const price = product.offerPrice || product.price;
-  return {
-    number,
-    productId,
-    quantity,
-    amount: price * quantity,
-    personalisation,
-    // Additional fields for display purposes (not in model)
-    productTitle: product.title,
-    unitPrice: price
-  };
+const categoryOptions = [
+  { value: 'planners', label: 'Planners' },
+  { value: 'pages', label: 'Pages' },
+  { value: 'stationery', label: 'Stationery' },
+];
+
+const typeOptions = {
+  planners: [
+    { value: 'largeplanners', label: 'Large Planners' },
+    { value: 'smallplanners', label: 'Small Planners' },
+  ],
+  pages: [
+    { value: 'daily', label: 'Daily Pages' },
+    { value: 'weekly', label: 'Weekly Pages' },
+    { value: 'monthly', label: 'Monthly Pages' },
+    { value: 'trackers', label: 'Trackers' },
+  ],
+  stationery: [
+    { value: 'separators', label: 'Planner Separators' },
+    { value: 'stickers', label: 'Stickers' },
+    { value: 'writingtool', label: 'Writing Tools' },
+  ],
 };
 
+const formatOrderForTable = (order) => ({
+  id: order.id,
+  userId: order.kupacId,
+  dateCreated: order.datumKreirana,
+  dateSent: order.datumPoslata,
+  status: order.status,
+  totalAmount: Number(order.ukupniIznos) || 0,
+  orderItems: (order?.stavkePorudzbine || order?.stavke_porudzbine || []).map((item) => ({
+    number: item.rb,
+    productId: item.proizvodId,
+    quantity: Number(item.kolicina) || 0,
+    amount: Number(item.iznosStavke) || 0,
+    personalisation: item.personalizacija || null,
+    productTitle: item.proizvod?.naziv || `Product #${item.proizvodId}`,
+    unitPrice: (Number(item.iznosStavke) || 0) / (Number(item.kolicina) || 1),
+  })),
+});
+
 function AdminPanel() {
-  const { user, logout } = useAuth();
+  const { user, logout, token } = useAuth();
   const navigate = useNavigate();
-  const [products, setProducts] = useState(productData);
+  const [products, setProducts] = useState([]);
   const [activeTab, setActiveTab] = useState("products");
   const [showModal, setShowModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
-  const [productMessage, setProductMessage] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [loadError, setLoadError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [productToDelete, setProductToDelete] = useState(null);
-  const [deleteMessage, setDeleteMessage] = useState(null);
-  const [orders, setOrders] = useState([
-    {
-      id: 1001,
-      userId: 101,
-      dateCreated: "2026-02-01",
-      dateSent: "2026-02-03",
-      status: "Shipped",
-      totalAmount: 37.90,
-      orderItems: [
-        getOrderItem(1, 5, 1),
-        getOrderItem(2, 0, 1)
-      ]
-    },
-    {
-      id: 1002,
-      userId: 102,
-      dateCreated: "2026-02-03",
-      dateSent: null,
-      status: "Pending",
-      totalAmount: 67.80,
-      orderItems: [
-        getOrderItem(1, 6, 1, "Text: Work Journal, Font: Sans-serif, Color: #1a1a1a"),
-        getOrderItem(2, 1, 1),
-        getOrderItem(3, 3, 2)
-      ]
-    }
-  ]);
-  const users = [
-    { id: 101, name: "Ana Petrović", address: "Knez Mihailova 12, Beograd" },
-    { id: 102, name: "Marko Tomić", address: "Bulevar Oslobođenja 45, Novi Sad" }
-  ];
+  const [orders, setOrders] = useState([]);
+  const [ordersLoaded, setOrdersLoaded] = useState(false);
+  const [users, setUsers] = useState([]);
   const [formData, setFormData] = useState(EMPTY_FORM);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      const response = await fetch("http://localhost:8000/api/proizvodi", {
+        headers: {
+          Accept: "application/json",
+          "X-Requested-With": "XMLHttpRequest",
+        },
+      });
+
+      if (!response.ok) {
+        setProducts([]);
+        setLoadError("Failed to load data");
+        return;
+      }
+
+      const data = await response.json();
+      if (Array.isArray(data)) {
+        const list = data.map((product) => ({
+          id: product.id,
+          title: product.naziv,
+          type: product.tip,
+          description: product.opis,
+          price: Number(product.cena) || 0,
+          offerPrice: product.cenaPopust !== null ? Number(product.cenaPopust) : null,
+          cat: product.kategorija.toLowerCase(),
+          availableInStock: Number(product.dostupnaKolicina) || 0,
+          color: product.bojaProizvoda,
+          material: product.materijalProizvoda,
+          metalColor: product.planer?.bojaMetala ?? "",
+          lining: product.planer?.postava ?? "",
+          pockets: product.planer?.brojDzepova ?? "",
+        }));
+        setProducts(list);
+      } else {
+        setProducts([]);
+      }
+      setLoadError(null);
+    };
+
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (!token) {
+      setOrders([]);
+      setUsers([]);
+      setLoadError(null);
+      return;
+    }
+
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/porudzbine", {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to load orders");
+        }
+
+        const data = await response.json();
+        const mappedOrders = Array.isArray(data) ? data.map(formatOrderForTable) : [];
+        const mappedUsers = Array.isArray(data)
+          ? data
+              .map((order) => order?.kupac)
+              .filter(Boolean)
+              .map((kupac) => ({
+                id: kupac.id,
+                name: `${kupac.ime ?? ""} ${kupac.prezime ?? ""}`.trim() || `User #${kupac.id}`,
+                address: kupac.adresa || null,
+              }))
+          : [];
+
+        setOrders(mappedOrders);
+        setUsers(mappedUsers);
+        setLoadError(null);
+      } catch (err) {
+        setOrders([]);
+        setUsers([]);
+        setLoadError("Failed to load data");
+        console.error(err);
+      } finally {
+        setOrdersLoaded(true);
+      }
+    };
+
+    fetchOrders();
+  }, [token]);
 
   if (!user || user.role !== "admin") {
     return <Navigate to="/" />;
@@ -89,29 +178,119 @@ function AdminPanel() {
     setFormData(EMPTY_FORM);
   };
 
-  const handleFormChange = (e) => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-  const handleSaveProduct = () => {
-  if (editingProduct) {
-    // Ako se edituje postojeći proizvod
-    setProducts(prevProducts =>
-      prevProducts.map(product =>
-        product.id === editingProduct.id
-          ? { ...editingProduct, ...formData }
-          : product
-      )
-    );
-    setProductMessage("✏️ Product updated successfully!");
-  } else {
-    // Ako se dodaje novi proizvod
-    const newProduct = {
-      ...formData,
-      id: products.length > 0 ? Math.max(...products.map(p => p.id)) + 1 : 1,
-    };
-    setProducts(prevProducts => [...prevProducts, newProduct]);
-    setProductMessage("✅ Product added successfully!");
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'cat') {
+      setFormData(prev => ({ ...prev, [name]: value, type: '' }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
+    }
+  };
+  const handleSaveProduct = async () => {
+  if (!formData.title || !formData.type || !formData.cat || !formData.price || !formData.availableInStock || !formData.color || !formData.material || !formData.description) {
+    alert("Please fill in all required fields");
+    return;
   }
-  setTimeout(() => setProductMessage(null), 4000);
-  handleCloseModal();
+
+  if (formData.cat === "planners" && (!formData.metalColor || !formData.lining || !formData.pockets)) {
+    alert("Please fill in all planner fields (Metal Color, Lining, Pockets)");
+    return;
+  }
+
+  let endpoint = 'http://localhost:8000/api/proizvodi';
+  let method = 'POST';
+
+  if (editingProduct) {
+    endpoint = `http://localhost:8000/api/proizvodi/${editingProduct.id}`;
+    method = 'PUT';
+  }
+
+  const categoryLabel = categoryOptions.find(opt => opt.value === formData.cat)?.label || formData.cat;
+  const typeLabel = formData.cat && typeOptions[formData.cat] 
+    ? typeOptions[formData.cat].find(opt => opt.value === formData.type)?.label || formData.type
+    : formData.type;
+
+  const payload = {
+    naziv: formData.title,
+    tip: typeLabel,
+    opis: formData.description,
+    cena: Number(formData.price),
+    cenaPopust: formData.offerPrice ? Number(formData.offerPrice) : null,
+    kategorija: categoryLabel,
+    dostupnaKolicina: Number(formData.availableInStock),
+    bojaProizvoda: formData.color,
+    materijalProizvoda: formData.material,
+  };
+
+  try {
+    const response = await fetch(endpoint, {
+      method: method,
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      setMessage("❌ Error saving product");
+      setTimeout(() => setMessage(null), 4000);
+      return;
+    }
+
+    const data = await response.json();
+    
+    let newProducts = [];
+    if (editingProduct) {
+      newProducts = products.map(p => {
+        if (p.id === editingProduct.id) {
+          return {
+            id: data.proizvod.id,
+            title: data.proizvod.naziv,
+            type: data.proizvod.tip,
+            description: data.proizvod.opis,
+            price: Number(data.proizvod.cena),
+            offerPrice: data.proizvod.cenaPopust !== null ? Number(data.proizvod.cenaPopust) : null,
+            cat: data.proizvod.kategorija.toLowerCase(),
+            availableInStock: Number(data.proizvod.dostupnaKolicina),
+            color: data.proizvod.bojaProizvoda,
+            material: data.proizvod.materijalProizvoda,
+            metalColor: "",
+            lining: "",
+            pockets: "",
+          };
+        }
+        return p;
+      });
+      setProducts(newProducts);
+      setMessage("✏️ Product updated successfully!");
+    } else {
+      const newProduct = {
+        id: data.proizvod.id,
+        title: data.proizvod.naziv,
+        type: data.proizvod.tip,
+        description: data.proizvod.opis,
+        price: Number(data.proizvod.cena),
+        offerPrice: data.proizvod.cenaPopust !== null ? Number(data.proizvod.cenaPopust) : null,
+        cat: data.proizvod.kategorija.toLowerCase(),
+        availableInStock: Number(data.proizvod.dostupnaKolicina),
+        color: data.proizvod.bojaProizvoda,
+        material: data.proizvod.materijalProizvoda,
+        metalColor: "",
+        lining: "",
+        pockets: "",
+      };
+      setProducts([...products, newProduct]);
+      setMessage("✅ Product added successfully!");
+    }
+
+    setTimeout(() => setMessage(null), 4000);
+    handleCloseModal();
+  } catch (err) {
+    alert("Greška pri čuvanju proizvoda");
+  }
 };
 
   const handleDeleteProduct = (id) => {
@@ -119,12 +298,59 @@ function AdminPanel() {
   setShowDeleteModal(true);
 };
 
-const confirmDeleteProduct = () => {
-  setProducts(prevProducts => prevProducts.filter(product => product.id !== productToDelete));
-  setDeleteMessage("🗑️ Product deleted successfully!");
-  setTimeout(() => setDeleteMessage(null), 4000);
-  setShowDeleteModal(false);
-  setProductToDelete(null);
+  const handleOrderStatusChange = async (orderId, status) => {
+    if (!token) {
+      alert("You must be logged in to edit orders.");
+      return;
+    }
+
+    const response = await fetch(`http://localhost:8000/api/porudzbine/${orderId}`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+        "X-Requested-With": "XMLHttpRequest",
+      },
+      body: JSON.stringify({ status }),
+    });
+
+    if (!response.ok) {
+      alert("There was an error in editing the status of the order. Try again later.");
+      return;
+    }
+
+    setOrders((prev) =>
+      prev.map((order) => (order.id === orderId ? { ...order, status } : order))
+    );
+    alert("Status updated.");
+  };
+
+const confirmDeleteProduct = async () => {
+  try {
+    const response = await fetch(`http://localhost:8000/api/proizvodi/${productToDelete}`, {
+      method: 'DELETE',
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${token}`,
+        "X-Requested-With": "XMLHttpRequest",
+      },
+    });
+
+    if (!response.ok) {
+      alert("Error deleting product");
+      return;
+    }
+
+    setProducts(prevProducts => prevProducts.filter(product => product.id !== productToDelete));
+    setMessage("🗑️ Product deleted successfully!");
+    setTimeout(() => setMessage(null), 4000);
+  } catch (err) {
+    alert("Error deleting product");
+  } finally {
+    setShowDeleteModal(false);
+    setProductToDelete(null);
+  }
 };
 
   return (
@@ -155,14 +381,14 @@ const confirmDeleteProduct = () => {
                 + Add Product
               </Button>
             </div>
-            {productMessage && (
-              <div className="alert alert-success rounded-3 shadow-sm mb-3">
-                {productMessage}
+            {message && (
+              <div className="alert alert-info rounded-3 shadow-sm mb-3">
+                {message}
               </div>
             )}
-            {deleteMessage && (
-              <div className="alert alert-danger rounded-3 shadow-sm mb-3">
-                {deleteMessage}
+            {loadError && (
+              <div className="alert alert-warning rounded-3 shadow-sm mb-3">
+                {loadError}
               </div>
             )}
             <div className="admin-table-container">
@@ -221,11 +447,18 @@ const confirmDeleteProduct = () => {
         {/*Kartica porudžbine*/}
         <Tab eventKey="orders" title="Orders">
           <div className="admin-section">
-            <OrdersTable 
-              orders={orders} 
-              isAdmin={true} 
-              onStatusChange={(id, status) => alert("There was an error in editing the status of the order. Try again later.")}
-                users={users} />
+            {loadError && (
+              <div className="alert alert-warning rounded-3 shadow-sm mb-3">
+                {loadError}
+              </div>
+            )}
+            <OrdersTable
+              orders={orders}
+              isAdmin={true}
+              onStatusChange={handleOrderStatusChange}
+              users={users}
+              showEmpty={ordersLoaded}
+            />
           </div>
         </Tab>
       </Tabs>
@@ -241,9 +474,47 @@ const confirmDeleteProduct = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
+            <div className="row">
+              <div className="col-md-6">
+                <Form.Group className="mb-3">
+                  <Form.Label>Category</Form.Label>
+                  <Form.Select
+                    name="cat"
+                    value={formData.cat}
+                    onChange={handleFormChange}
+                    disabled={!!editingProduct}
+                  >
+                    <option value="">Select Category</option>
+                    {categoryOptions.map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </div>
+              <div className="col-md-6">
+                <Form.Group className="mb-3">
+                  <Form.Label>Type</Form.Label>
+                  <Form.Select
+                    name="type"
+                    value={formData.type}
+                    onChange={handleFormChange}
+                    disabled={!formData.cat}
+                  >
+                    <option value="">Select Type</option>
+                    {formData.cat && typeOptions[formData.cat] && typeOptions[formData.cat].map(opt => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                  </Form.Select>
+                </Form.Group>
+              </div>
+            </div>
+
             {[
-              [{ label: "Title", name: "title" }, { label: "Type", name: "type" }],
-              [{ label: "Category", name: "cat" }, { label: "Available in Stock", name: "availableInStock", type: "number" }],
+              [{ label: "Title", name: "title" }, { label: "Available in Stock", name: "availableInStock", type: "number" }],
               [{ label: "Price (€)", name: "price", type: "number" }, { label: "Offer Price (€)", name: "offerPrice", type: "number" }],
               [{ label: "Color", name: "color" }, { label: "Material", name: "material" }]
             ].map((row, i) => (
@@ -275,7 +546,7 @@ const confirmDeleteProduct = () => {
               />
             </Form.Group>
 
-            {formData.cat === "Planners" && (
+            {formData.cat === "planners" && (
               <div className="row">
                 {[
                   { label: "Metal Color", name: "metalColor" },

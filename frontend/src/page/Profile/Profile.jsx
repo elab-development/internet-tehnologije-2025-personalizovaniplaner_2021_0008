@@ -1,57 +1,67 @@
+import { useEffect, useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { productData } from "../../utils/data";
 import OrdersTable from "../../components/Orders/OrdersTable";
 import "../Admin/admin.css";
 
-const getOrderItem = (number, productId, quantity = 1, personalisation = null) => {
-  const product = productData.find(p => p.id === productId);
-  if (!product) return null;
-  
-  const price = product.offerPrice || product.price;
-  return {
-    number,
-    productId,
-    quantity,
-    amount: price * quantity,
-    personalisation,
-    productTitle: product.title,
-    unitPrice: price
-  };
-};
+const formatOrderForTable = (order) => ({
+  id: order.id,
+  userId: order.kupacId,
+  dateCreated: order.datumKreirana,
+  dateSent: order.datumPoslata,
+  status: order.status,
+  totalAmount: Number(order.ukupniIznos) || 0,
+  orderItems: (order?.stavkePorudzbine || order?.stavke_porudzbine || []).map((item) => ({
+    number: item.rb,
+    productId: item.proizvodId,
+    quantity: Number(item.kolicina) || 0,
+    amount: Number(item.iznosStavke) || 0,
+    personalisation: item.personalizacija || null,
+    productTitle: item.proizvod?.naziv || `Product #${item.proizvodId}`,
+    unitPrice: (Number(item.iznosStavke) || 0) / (Number(item.kolicina) || 1),
+  })),
+});
 
 function Profile() {
-  const { user, logout } = useAuth();
+  const { user, logout, token } = useAuth();
   const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [ordersLoaded, setOrdersLoaded] = useState(false);
 
-  //porudžbine za testiranje, biće zamenjene kad se povežemo sa backendom
-  const userOrders = [
-    {
-      id: 2001,
-      userId: user?.id || 201,
-      dateCreated: "2026-01-15",
-      dateSent: "2026-01-18",
-      status: "Delivered",
-      totalAmount: 67.80,
-      orderItems: [
-        getOrderItem(1, 5, 1),
-        getOrderItem(2, 0, 1)
-      ]
-    },
-    {
-      id: 2002,
-      userId: user?.id || 201,
-      dateCreated: "2026-02-05",
-      dateSent: null,
-      status: "Shipped",
-      totalAmount: 42.30,
-      orderItems: [
-        getOrderItem(1, 3, 1, "Text: My Planner, Font: Serif, Color: #000000"),
-        getOrderItem(2, 4, 1),
-        getOrderItem(3, 1, 1)
-      ]
+  useEffect(() => {
+    if (!token) {
+      setOrders([]);
+      return;
     }
-  ];
+
+    const fetchOrders = async () => {
+      try {
+        const response = await fetch("http://localhost:8000/api/porudzbine", {
+          headers: {
+            Accept: "application/json",
+            Authorization: `Bearer ${token}`,
+            "X-Requested-With": "XMLHttpRequest",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to load orders");
+        }
+
+        const data = await response.json();
+        setOrders(Array.isArray(data) ? data.map(formatOrderForTable) : []);
+      } catch (err) {
+        setOrders([]);
+        console.error(err);
+      } finally {
+        setOrdersLoading(false);
+        setOrdersLoaded(true);
+      }
+    };
+
+    fetchOrders();
+  }, [token]);
 
   return (
     <div className="admin-container">
@@ -80,7 +90,7 @@ function Profile() {
       </div>
 
       <div className="admin-section">
-        <OrdersTable orders={userOrders} isAdmin={false} />
+        <OrdersTable orders={orders} isAdmin={false} showEmpty={ordersLoaded} />
       </div>
     </div>
   );
