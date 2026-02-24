@@ -1,1 +1,65 @@
-Personalizovani planer
+Personalizovani Planer
+====================
+
+Opis aplikacije:
+----------------
+Personalizovani Planer je web aplikacija koja omogućava korisnicima da kreiraju, naručuju i 
+personalizuju planere, kao i prate porudžbine i proizvode. 
+Aplikacija nudi administrativni panel za upravljanje proizvodima, porudžbinama i korisnicima, 
+uz dodatne funkcionalnosti kao što su prikaz kursa valuta i motivacionih citata.
+
+Tehnologije koje su korišćene:
+-----------------------------
+- Backend: Laravel PHP framework, MySQL baza podataka
+- Frontend: React.js, CSS
+- Autentifikacija: Laravel Sanctum
+- Eksterni API-ji: ExchangeRate-API (kurs valuta), Type.fit Quotes API (citati)
+
+Instrukcije za lokalno pokretanje aplikacije:
+--------------------------------------------
+1. Backend (Laravel):
+	 - Instalirajte PHP i Composer.
+	 - U direktorijumu backend pokrenite:
+		 composer install
+	 - Kreirajte .env fajl (možete kopirati .env.example) i podesite parametre baze.
+	 - Pokrenite migracije i seedere:
+		 php artisan migrate --seed
+	 - Pokrenite server:
+		 php artisan serve --port=8000
+
+2. Frontend (React):
+	 - Instalirajte Node.js i npm.
+	 - U direktorijumu frontend pokrenite:
+		 npm install
+	 - Pokrenite frontend aplikaciju:
+		 npm start
+
+3. Pristup aplikaciji:
+	 - Backend API je dostupan na http://localhost:8000
+	 - Frontend aplikacija je dostupna na http://localhost:3000
+
+Napomena:
+- Za funkcionalnost kursa valuta i citata potrebno je imati internet konekciju.
+- Za administratorski panel koristite nalog administratora, a za pristup profilu koristite nalog kupca.
+
+
+
+
+
+Pokretanje pomoću Docker-a i docker-compose-a:
+----------------------------------------------
+1. Otvorite PowerShell i idite u root folder projekta:
+	cd "D:\ITEH - git\internet-tehnologije-2025-personalizovaniplaner_2021_0008"
+2. Pokrenite ili restartujte Docker kontejnere:
+	docker-compose down   (ako su već podignuti)
+	docker-compose up --build
+3. Otvorite novi PowerShell prozor i uđite u backend kontejner:
+	docker exec -it internet-tehnologije-2025-personalizovaniplaner_2021_0008-backend-1 bash
+4. U kontejneru pokrenite:
+	php artisan storage:link
+5. Zatim pokrenite migracije i seedere:
+	php artisan migrate --seed
+
+Backend API će biti dostupan na http://localhost:8000, a frontend na http://localhost:3000.
+
+
