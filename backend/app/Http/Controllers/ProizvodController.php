@@ -7,6 +7,15 @@ use Illuminate\Http\Request;
 
 class ProizvodController extends Controller
 {
+    /**
+ * @OA\Get(
+ *     path="/api/products",
+ *     summary="Prikaz svih proizvoda",
+ *     tags={"Products"},
+ *     @OA\Response(response=200, description="Lista proizvoda")
+ * )
+ */
+
     public function index()
     {
         $proizvodi = Proizvod::with('planer')->get();
@@ -30,6 +39,30 @@ class ProizvodController extends Controller
             ];
         }));
     }
+
+/**
+ * @OA\Post(
+ *     path="/api/products",
+ *     summary="Dodavanje novog proizvoda",
+ *     tags={"Products"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"naziv","tip","opis","cena","kategorija","dostupnaKolicina","bojaProizvoda","materijalProizvoda"},
+ *             @OA\Property(property="naziv", type="string"),
+ *             @OA\Property(property="tip", type="string"),
+ *             @OA\Property(property="opis", type="string"),
+ *             @OA\Property(property="cena", type="number"),
+ *             @OA\Property(property="cenaPopust", type="number"),
+ *             @OA\Property(property="kategorija", type="string"),
+ *             @OA\Property(property="dostupnaKolicina", type="integer"),
+ *             @OA\Property(property="bojaProizvoda", type="string"),
+ *             @OA\Property(property="materijalProizvoda", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(response=201, description="Proizvod kreiran")
+ * )
+ */
 
     public function store(Request $request)
     {
@@ -64,6 +97,37 @@ class ProizvodController extends Controller
             ]
         ], 201);
     }
+/**
+ * @OA\Put(
+ *     path="/api/products/{id}",
+ *     summary="Ažuriranje proizvoda",
+ *     tags={"Products"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID proizvoda",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"naziv","tip","opis","cena","kategorija","dostupnaKolicina","bojaProizvoda","materijalProizvoda"},
+ *             @OA\Property(property="naziv", type="string"),
+ *             @OA\Property(property="tip", type="string"),
+ *             @OA\Property(property="opis", type="string"),
+ *             @OA\Property(property="cena", type="number"),
+ *             @OA\Property(property="cenaPopust", type="number"),
+ *             @OA\Property(property="kategorija", type="string"),
+ *             @OA\Property(property="dostupnaKolicina", type="integer"),
+ *             @OA\Property(property="bojaProizvoda", type="string"),
+ *             @OA\Property(property="materijalProizvoda", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Proizvod uspešno ažuriran"),
+ *     @OA\Response(response=404, description="Proizvod nije pronađen")
+ * )
+ */
 
     public function update(Request $request, Proizvod $proizvod)
     {
@@ -98,6 +162,23 @@ class ProizvodController extends Controller
             ]
         ]);
     }
+
+    /**
+ * @OA\Delete(
+ *     path="/api/products/{id}",
+ *     summary="Brisanje proizvoda",
+ *     tags={"Products"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID proizvoda",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(response=200, description="Proizvod obrisan"),
+ *     @OA\Response(response=404, description="Proizvod nije pronađen")
+ * )
+ */
 
     public function destroy(Proizvod $proizvod)
     {

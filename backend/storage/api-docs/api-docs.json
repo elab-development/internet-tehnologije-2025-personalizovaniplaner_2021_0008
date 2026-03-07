@@ -1,0 +1,484 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Personalizovani Planer API",
+        "description": "API dokumentacija za seminar projekat",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:8000",
+            "description": "Localhost server"
+        }
+    ],
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Registracija novog kupca",
+                "operationId": "abcb408f0ae1e46b69f06737c093ecef",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "ime",
+                                    "prezime",
+                                    "email",
+                                    "adresa",
+                                    "telefon",
+                                    "lozinka"
+                                ],
+                                "properties": {
+                                    "ime": {
+                                        "type": "string"
+                                    },
+                                    "prezime": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "adresa": {
+                                        "type": "string"
+                                    },
+                                    "telefon": {
+                                        "type": "string"
+                                    },
+                                    "lozinka": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Uspešna registracija"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Login kupca ili administratora",
+                "operationId": "a3b306d14572d1f4bd6c064b3233e7b8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "lozinka"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email"
+                                    },
+                                    "lozinka": {
+                                        "type": "string",
+                                        "format": "password"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Uspešan login"
+                    },
+                    "422": {
+                        "description": "Nevalidne kredencijale"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Logout korisnika",
+                "operationId": "fe8f3429cd6979b3b4517e186505f9f9",
+                "responses": {
+                    "200": {
+                        "description": "Uspešan logout"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/me": {
+            "get": {
+                "tags": [
+                    "Auth"
+                ],
+                "summary": "Trenutni korisnik",
+                "operationId": "9d9bc556f927575aa492a88c28fe5908",
+                "responses": {
+                    "200": {
+                        "description": "Vraća podatke o trenutnom korisniku"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/api/orders": {
+            "get": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Prikaz svih porudžbina korisnika ili admina",
+                "operationId": "e8d4a508c5e31ab968b9b762692c48b9",
+                "responses": {
+                    "200": {
+                        "description": "Lista porudžbina"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Kreiranje nove porudžbine",
+                "operationId": "fa0c9fc272d9cfa4d0ca8770b747c446",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "cartItems",
+                                    "totalAmount",
+                                    "deliveryFee"
+                                ],
+                                "properties": {
+                                    "cartItems": {
+                                        "type": "array",
+                                        "items": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer"
+                                                },
+                                                "title": {
+                                                    "type": "string"
+                                                },
+                                                "price": {
+                                                    "type": "number"
+                                                },
+                                                "quantity": {
+                                                    "type": "integer"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "totalAmount": {
+                                        "type": "number"
+                                    },
+                                    "deliveryFee": {
+                                        "type": "number"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Porudžbina kreirana"
+                    }
+                }
+            }
+        },
+        "/api/orders/{id}": {
+            "put": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Ažuriranje statusa porudžbine (admin)",
+                "operationId": "21430b33e22e3ef611d474f7f2aaab2c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status"
+                                ],
+                                "properties": {
+                                    "status": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Porudžbina ažurirana"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Orders"
+                ],
+                "summary": "Brisanje porudžbine (samo admin)",
+                "operationId": "fdc2dbff18c9f6ada7c44f1e29b4f3df",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID porudžbine",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Porudžbina obrisana"
+                    },
+                    "403": {
+                        "description": "Zabranjen pristup"
+                    },
+                    "401": {
+                        "description": "Nije autorizovan"
+                    },
+                    "404": {
+                        "description": "Porudžbina nije pronađena"
+                    }
+                }
+            }
+        },
+        "/api/products": {
+            "get": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Prikaz svih proizvoda",
+                "operationId": "f244245293002c3ef578511f93d5b91a",
+                "responses": {
+                    "200": {
+                        "description": "Lista proizvoda"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Dodavanje novog proizvoda",
+                "operationId": "df3f418b1f8c0df625ca7b550bb29f4a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "naziv",
+                                    "tip",
+                                    "opis",
+                                    "cena",
+                                    "kategorija",
+                                    "dostupnaKolicina",
+                                    "bojaProizvoda",
+                                    "materijalProizvoda"
+                                ],
+                                "properties": {
+                                    "naziv": {
+                                        "type": "string"
+                                    },
+                                    "tip": {
+                                        "type": "string"
+                                    },
+                                    "opis": {
+                                        "type": "string"
+                                    },
+                                    "cena": {
+                                        "type": "number"
+                                    },
+                                    "cenaPopust": {
+                                        "type": "number"
+                                    },
+                                    "kategorija": {
+                                        "type": "string"
+                                    },
+                                    "dostupnaKolicina": {
+                                        "type": "integer"
+                                    },
+                                    "bojaProizvoda": {
+                                        "type": "string"
+                                    },
+                                    "materijalProizvoda": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Proizvod kreiran"
+                    }
+                }
+            }
+        },
+        "/api/products/{id}": {
+            "put": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Ažuriranje proizvoda",
+                "operationId": "29093e7f8ce57a2bfde2aaaac61f16f1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID proizvoda",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "naziv",
+                                    "tip",
+                                    "opis",
+                                    "cena",
+                                    "kategorija",
+                                    "dostupnaKolicina",
+                                    "bojaProizvoda",
+                                    "materijalProizvoda"
+                                ],
+                                "properties": {
+                                    "naziv": {
+                                        "type": "string"
+                                    },
+                                    "tip": {
+                                        "type": "string"
+                                    },
+                                    "opis": {
+                                        "type": "string"
+                                    },
+                                    "cena": {
+                                        "type": "number"
+                                    },
+                                    "cenaPopust": {
+                                        "type": "number"
+                                    },
+                                    "kategorija": {
+                                        "type": "string"
+                                    },
+                                    "dostupnaKolicina": {
+                                        "type": "integer"
+                                    },
+                                    "bojaProizvoda": {
+                                        "type": "string"
+                                    },
+                                    "materijalProizvoda": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Proizvod uspešno ažuriran"
+                    },
+                    "404": {
+                        "description": "Proizvod nije pronađen"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Products"
+                ],
+                "summary": "Brisanje proizvoda",
+                "operationId": "dba9200f1ffc0d2936f06175893a3989",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID proizvoda",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Proizvod obrisan"
+                    },
+                    "404": {
+                        "description": "Proizvod nije pronađen"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Auth",
+            "description": "Auth"
+        },
+        {
+            "name": "Orders",
+            "description": "Orders"
+        },
+        {
+            "name": "Products",
+            "description": "Products"
+        }
+    ]
+}

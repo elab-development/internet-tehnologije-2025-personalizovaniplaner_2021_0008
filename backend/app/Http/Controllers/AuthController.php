@@ -11,6 +11,27 @@ use Illuminate\Validation\ValidationException;
 class AuthController extends Controller
 {
     //Registracija novog kupca
+    /**
+ * @OA\Post(
+ *     path="/api/register",
+ *     summary="Registracija novog kupca",
+ *     tags={"Auth"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"ime","prezime","email","adresa","telefon","lozinka"},
+ *             @OA\Property(property="ime", type="string"),
+ *             @OA\Property(property="prezime", type="string"),
+ *             @OA\Property(property="email", type="string", format="email"),
+ *             @OA\Property(property="adresa", type="string"),
+ *             @OA\Property(property="telefon", type="string"),
+ *             @OA\Property(property="lozinka", type="string", format="password")
+ *         )
+ *     ),
+ *     @OA\Response(response=201, description="Uspešna registracija")
+ * )
+ */
+
     public function registerKupac(Request $request)
     {
         $validated = $request->validate([
@@ -34,7 +55,24 @@ class AuthController extends Controller
     }
 
     //Login kupca ili administratora istim endpointom
-    
+    /**
+ * @OA\Post(
+ *     path="/api/login",
+ *     summary="Login kupca ili administratora",
+ *     tags={"Auth"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"email","lozinka"},
+ *             @OA\Property(property="email", type="string", format="email"),
+ *             @OA\Property(property="lozinka", type="string", format="password")
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Uspešan login"),
+ *     @OA\Response(response=422, description="Nevalidne kredencijale")
+ * )
+ */
+
     public function login(Request $request)
     {
         $validated = $request->validate([
@@ -86,6 +124,16 @@ class AuthController extends Controller
     }
 
     //Logout
+    /**
+ * @OA\Post(
+ *     path="/api/logout",
+ *     summary="Logout korisnika",
+ *     tags={"Auth"},
+ *     security={{"sanctum":{}}},
+ *     @OA\Response(response=200, description="Uspešan logout")
+ * )
+ */
+
     public function logout(Request $request)
     {
         $request->user()->currentAccessToken()->delete();
@@ -96,6 +144,16 @@ class AuthController extends Controller
     }
 
     //Pronalaženje trenutnog korisnika
+    /**
+ * @OA\Get(
+ *     path="/api/me",
+ *     summary="Trenutni korisnik",
+ *     tags={"Auth"},
+ *     security={{"sanctum":{}}},
+ *     @OA\Response(response=200, description="Vraća podatke o trenutnom korisniku")
+ * )
+ */
+
     public function me(Request $request)
     {
         return response()->json([

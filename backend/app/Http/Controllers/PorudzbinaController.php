@@ -12,6 +12,15 @@ use Illuminate\Support\Facades\Auth;
 class PorudzbinaController extends Controller
 {
    ////prikazuje sve porudzbine koje je kupac napravio
+   /**
+ * @OA\Get(
+ *     path="/api/orders",
+ *     summary="Prikaz svih porudžbina korisnika ili admina",
+ *     tags={"Orders"},
+ *     @OA\Response(response=200, description="Lista porudžbina")
+ * )
+ */
+
     public function index()
     {
         $user = Auth::guard('sanctum')->user();
@@ -37,6 +46,31 @@ class PorudzbinaController extends Controller
     /**
      * pravi novu porudzbinu na osnovu poslatih podataka o korpi i kreira stavke porudzbine, kao i smanjuje dostupnu kolicinu proizvoda
      */
+    /**
+ * @OA\Post(
+ *     path="/api/orders",
+ *     summary="Kreiranje nove porudžbine",
+ *     tags={"Orders"},
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"cartItems","totalAmount","deliveryFee"},
+ *             @OA\Property(property="cartItems", type="array",
+ *                 @OA\Items(
+ *                     @OA\Property(property="id", type="integer"),
+ *                     @OA\Property(property="title", type="string"),
+ *                     @OA\Property(property="price", type="number"),
+ *                     @OA\Property(property="quantity", type="integer")
+ *                 )
+ *             ),
+ *             @OA\Property(property="totalAmount", type="number"),
+ *             @OA\Property(property="deliveryFee", type="number")
+ *         )
+ *     ),
+ *     @OA\Response(response=201, description="Porudžbina kreirana")
+ * )
+ */
+
     public function store(Request $request)
     {
         $user = Auth::guard('sanctum')->user();
@@ -103,6 +137,22 @@ class PorudzbinaController extends Controller
         }
     }
 
+/**
+ * @OA\Put(
+ *     path="/api/orders/{id}",
+ *     summary="Ažuriranje statusa porudžbine (admin)",
+ *     tags={"Orders"},
+ *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"status"},
+ *             @OA\Property(property="status", type="string")
+ *         )
+ *     ),
+ *     @OA\Response(response=200, description="Porudžbina ažurirana")
+ * )
+ */
 
     
     public function update(Request $request, Porudzbina $porudzbina)
@@ -130,7 +180,25 @@ class PorudzbinaController extends Controller
         ]);
     }
 
-    
+    /**
+ * @OA\Delete(
+ *     path="/api/orders/{id}",
+ *     summary="Brisanje porudžbine (samo admin)",
+ *     tags={"Orders"},
+ *     @OA\Parameter(
+ *         name="id",
+ *         in="path",
+ *         required=true,
+ *         description="ID porudžbine",
+ *         @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(response=200, description="Porudžbina obrisana"),
+ *     @OA\Response(response=403, description="Zabranjen pristup"),
+ *     @OA\Response(response=401, description="Nije autorizovan"),
+ *     @OA\Response(response=404, description="Porudžbina nije pronađena")
+ * )
+ */
+
     public function destroy(Porudzbina $porudzbina)
     {
         //
